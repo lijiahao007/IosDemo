@@ -7,6 +7,8 @@
 
 #import "ViewController.h"
 #import "Masonry.h"
+#import "MasonryDemoViewController.h"
+#import "YUVDemoViewController.h"
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView* tableView;
@@ -18,9 +20,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [HSColorScheme colorBackground];
     
-    [self.tableArray addObjectsFromArray:@[@"时间View"]];
+    [self.tableArray addObjectsFromArray:@[@"Masonry"]];
+    [self.tableArray addObjectsFromArray:@[@"YUVDemo"]];
     
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kWidth, kHeight)];
     self.tableView.estimatedRowHeight = 70;
@@ -73,7 +76,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.row) {
-        
+        case 0:{
+            MasonryDemoViewController* vc = [MasonryDemoViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 1: {
+            YUVDemoViewController* vc = [YUVDemoViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
     }
 }
 

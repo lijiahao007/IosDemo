@@ -9,7 +9,7 @@
 #import "ViewController.h"
 
 @interface SceneDelegate ()
-
+@property (nonatomic, strong) UINavigationController* rootNav;
 @end
 
 @implementation SceneDelegate
@@ -25,10 +25,9 @@
     UIWindow* window = [[UIWindow alloc]initWithWindowScene:windowScene];
     self.window = window;
     
-    
     ViewController* vc = [[ViewController alloc]init];
-    UINavigationController* nav = [[UINavigationController alloc]initWithRootViewController:vc];
-    self.window.rootViewController = nav;
+    self.rootNav = [[UINavigationController alloc]initWithRootViewController:vc];
+    self.window.rootViewController = self.rootNav;
     [self.window makeKeyAndVisible];
 }
 

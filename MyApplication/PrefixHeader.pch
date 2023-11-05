@@ -14,6 +14,11 @@
 #define kWidth [UIScreen mainScreen].bounds.size.width
 #define kHeight [UIScreen mainScreen].bounds.size.height
 
+#define appDelegate (AppDelegate*)([UIApplication sharedApplication].delegate);
+#define sceneDelegate (SceneDelegate*)[[UIApplication sharedApplication].connectedScenes anyObject].delegate
+
 #import "HSColorUtils.h"
+#import "AppDelegate.h"
+#import "SceneDelegate.h"
 
 #endif /* PrefixHeader_pch */
