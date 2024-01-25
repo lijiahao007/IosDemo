@@ -9,6 +9,8 @@
 #import "Masonry.h"
 #import "MasonryDemoViewController.h"
 #import "YUVDemoViewController.h"
+#import "AudioChatViewController.h"
+#import "StackViewDemoViewController.h"
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView* tableView;
@@ -24,6 +26,8 @@
     
     [self.tableArray addObjectsFromArray:@[@"Masonry"]];
     [self.tableArray addObjectsFromArray:@[@"YUVDemo"]];
+    [self.tableArray addObjectsFromArray:@[@"AudioChat"]];
+    [self.tableArray addObjectsFromArray:@[@"StackView"]];
     
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kWidth, kHeight)];
     self.tableView.estimatedRowHeight = 70;
@@ -83,6 +87,16 @@
         }
         case 1: {
             YUVDemoViewController* vc = [YUVDemoViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 2: {
+            AudioChatViewController* vc = [AudioChatViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 3: {
+            StackViewDemoViewController* vc = [StackViewDemoViewController new];
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }

@@ -68,6 +68,8 @@
 		54134C822ADEEF24007FBE7C /* compare_gcc.cc in Sources */ = {isa = PBXBuildFile; fileRef = 54134C4A2ADEEF24007FBE7C /* compare_gcc.cc */; };
 		54134C832ADEEF24007FBE7C /* compare_neon64.cc in Sources */ = {isa = PBXBuildFile; fileRef = 54134C4B2ADEEF24007FBE7C /* compare_neon64.cc */; };
 		54134C842ADEEF24007FBE7C /* scale_argb.cc in Sources */ = {isa = PBXBuildFile; fileRef = 54134C4C2ADEEF24007FBE7C /* scale_argb.cc */; };
+		5458573E2B4AF6FD001E95A8 /* StackViewDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5458573C2B4AF6FD001E95A8 /* StackViewDemoViewController.m */; };
+		5458573F2B4AF6FD001E95A8 /* StackViewDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5458573D2B4AF6FD001E95A8 /* StackViewDemoViewController.xib */; };
 		54688CA22ABCC23C007F48E8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 54688CA12ABCC23C007F48E8 /* AppDelegate.m */; };
 		54688CA82ABCC23C007F48E8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54688CA72ABCC23C007F48E8 /* ViewController.m */; };
 		54688CAD2ABCC23D007F48E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54688CAC2ABCC23D007F48E8 /* Assets.xcassets */; };
@@ -76,6 +78,10 @@
 		54688CBD2ABCC23D007F48E8 /* MyApplicationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54688CBC2ABCC23D007F48E8 /* MyApplicationTests.m */; };
 		54688CC72ABCC23D007F48E8 /* MyApplicationUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54688CC62ABCC23D007F48E8 /* MyApplicationUITests.m */; };
 		54688CC92ABCC23D007F48E8 /* MyApplicationUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54688CC82ABCC23D007F48E8 /* MyApplicationUITestsLaunchTests.m */; };
+		54CB9B9A2B39BAA900AF9827 /* AudioChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CB9B982B39BAA900AF9827 /* AudioChatViewController.m */; };
+		54CB9B9B2B39BAA900AF9827 /* AudioChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54CB9B992B39BAA900AF9827 /* AudioChatViewController.xib */; };
+		54CB9B9E2B39CF4700AF9827 /* AudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CB9B9D2B39CF4700AF9827 /* AudioManager.m */; };
+		54D9D1F72AF77FE300962B18 /* DemoView1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54D9D1F62AF77FE300962B18 /* DemoView1.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -187,6 +193,9 @@
 		54134C4A2ADEEF24007FBE7C /* compare_gcc.cc */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = compare_gcc.cc; sourceTree = "<group>"; };
 		54134C4B2ADEEF24007FBE7C /* compare_neon64.cc */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = compare_neon64.cc; sourceTree = "<group>"; };
 		54134C4C2ADEEF24007FBE7C /* scale_argb.cc */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = scale_argb.cc; sourceTree = "<group>"; };
+		5458573B2B4AF6FD001E95A8 /* StackViewDemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StackViewDemoViewController.h; sourceTree = "<group>"; };
+		5458573C2B4AF6FD001E95A8 /* StackViewDemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StackViewDemoViewController.m; sourceTree = "<group>"; };
+		5458573D2B4AF6FD001E95A8 /* StackViewDemoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StackViewDemoViewController.xib; sourceTree = "<group>"; };
 		54688C9D2ABCC23C007F48E8 /* MyApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54688CA02ABCC23C007F48E8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		54688CA12ABCC23C007F48E8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -201,6 +210,12 @@
 		54688CC22ABCC23D007F48E8 /* MyApplicationUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyApplicationUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		54688CC62ABCC23D007F48E8 /* MyApplicationUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyApplicationUITests.m; sourceTree = "<group>"; };
 		54688CC82ABCC23D007F48E8 /* MyApplicationUITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyApplicationUITestsLaunchTests.m; sourceTree = "<group>"; };
+		54CB9B972B39BAA900AF9827 /* AudioChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioChatViewController.h; sourceTree = "<group>"; };
+		54CB9B982B39BAA900AF9827 /* AudioChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioChatViewController.m; sourceTree = "<group>"; };
+		54CB9B992B39BAA900AF9827 /* AudioChatViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AudioChatViewController.xib; sourceTree = "<group>"; };
+		54CB9B9C2B39CF4700AF9827 /* AudioManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioManager.h; sourceTree = "<group>"; };
+		54CB9B9D2B39CF4700AF9827 /* AudioManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioManager.m; sourceTree = "<group>"; };
+		54D9D1F62AF77FE300962B18 /* DemoView1.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DemoView1.xib; sourceTree = "<group>"; };
 		75BAAB4BF0ECAC0293A9691B /* Pods-MyApplication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyApplication.debug.xcconfig"; path = "Target Support Files/Pods-MyApplication/Pods-MyApplication.debug.xcconfig"; sourceTree = "<group>"; };
 		E096DE66C3698E2F71727597 /* Pods-MyApplication.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyApplication.release.xcconfig"; path = "Target Support Files/Pods-MyApplication/Pods-MyApplication.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -245,6 +260,7 @@
 			children = (
 				54134B382AD784D4007FBE7C /* MasonryDemoViewController.h */,
 				54134B392AD784D4007FBE7C /* MasonryDemoViewController.m */,
+				54D9D1F62AF77FE300962B18 /* DemoView1.xib */,
 			);
 			path = MasonryDemo;
 			sourceTree = "<group>";
@@ -379,6 +395,16 @@
 			path = source;
 			sourceTree = "<group>";
 		};
+		5458573A2B4AF6D4001E95A8 /* StackViewDemo */ = {
+			isa = PBXGroup;
+			children = (
+				5458573B2B4AF6FD001E95A8 /* StackViewDemoViewController.h */,
+				5458573C2B4AF6FD001E95A8 /* StackViewDemoViewController.m */,
+				5458573D2B4AF6FD001E95A8 /* StackViewDemoViewController.xib */,
+			);
+			path = StackViewDemo;
+			sourceTree = "<group>";
+		};
 		54688C942ABCC23C007F48E8 = {
 			isa = PBXGroup;
 			children = (
@@ -404,6 +430,8 @@
 		54688C9F2ABCC23C007F48E8 /* MyApplication */ = {
 			isa = PBXGroup;
 			children = (
+				5458573A2B4AF6D4001E95A8 /* StackViewDemo */,
+				54CB9B962B39A01800AF9827 /* AudioChat */,
 				54134B3B2ADD8216007FBE7C /* YuvDemo */,
 				54134B372AD784BB007FBE7C /* MasonryDemo */,
 				54134B2F2AD75ACE007FBE7C /* SceneDelegate.h */,
@@ -437,6 +465,18 @@
 				54688CC82ABCC23D007F48E8 /* MyApplicationUITestsLaunchTests.m */,
 			);
 			path = MyApplicationUITests;
+			sourceTree = "<group>";
+		};
+		54CB9B962B39A01800AF9827 /* AudioChat */ = {
+			isa = PBXGroup;
+			children = (
+				54CB9B972B39BAA900AF9827 /* AudioChatViewController.h */,
+				54CB9B982B39BAA900AF9827 /* AudioChatViewController.m */,
+				54CB9B992B39BAA900AF9827 /* AudioChatViewController.xib */,
+				54CB9B9C2B39CF4700AF9827 /* AudioManager.h */,
+				54CB9B9D2B39CF4700AF9827 /* AudioManager.m */,
+			);
+			path = AudioChat;
 			sourceTree = "<group>";
 		};
 		C7B8292176E27066346E3E52 /* Frameworks */ = {
@@ -562,8 +602,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				54134C802ADEEF24007FBE7C /* test.sh in Resources */,
+				5458573F2B4AF6FD001E95A8 /* StackViewDemoViewController.xib in Resources */,
 				54688CB02ABCC23D007F48E8 /* LaunchScreen.storyboard in Resources */,
 				54688CAD2ABCC23D007F48E8 /* Assets.xcassets in Resources */,
+				54D9D1F72AF77FE300962B18 /* DemoView1.xib in Resources */,
+				54CB9B9B2B39BAA900AF9827 /* AudioChatViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -630,6 +673,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54CB9B9A2B39BAA900AF9827 /* AudioChatViewController.m in Sources */,
 				54134C5A2ADEEF24007FBE7C /* row_neon.cc in Sources */,
 				54134C712ADEEF24007FBE7C /* rotate_win.cc in Sources */,
 				54134C842ADEEF24007FBE7C /* scale_argb.cc in Sources */,
@@ -651,6 +695,7 @@
 				54134C532ADEEF24007FBE7C /* row_mmi.cc in Sources */,
 				54134C5E2ADEEF24007FBE7C /* compare.cc in Sources */,
 				54134C522ADEEF24007FBE7C /* rotate.cc in Sources */,
+				54CB9B9E2B39CF4700AF9827 /* AudioManager.m in Sources */,
 				54134C752ADEEF24007FBE7C /* mjpeg_validate.cc in Sources */,
 				54134C6C2ADEEF24007FBE7C /* rotate_mmi.cc in Sources */,
 				54134C642ADEEF24007FBE7C /* row_msa.cc in Sources */,
@@ -666,6 +711,7 @@
 				54134C602ADEEF24007FBE7C /* convert_from_argb.cc in Sources */,
 				54134C572ADEEF24007FBE7C /* cpu_id.cc in Sources */,
 				54134B362AD7620A007FBE7C /* HSColorUtils.m in Sources */,
+				5458573E2B4AF6FD001E95A8 /* StackViewDemoViewController.m in Sources */,
 				54134C582ADEEF24007FBE7C /* row_win.cc in Sources */,
 				54134C5C2ADEEF24007FBE7C /* row_lasx.cc in Sources */,
 				54134C702ADEEF24007FBE7C /* compare_neon.cc in Sources */,
@@ -795,6 +841,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-v";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -848,6 +895,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-v";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -864,6 +912,7 @@
 				DEVELOPMENT_TEAM = 87NU3XASUN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyApplication/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "我想偷看你的相册";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -874,7 +923,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.lijiahao.MyApplication;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lijiahao.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -892,6 +941,7 @@
 				DEVELOPMENT_TEAM = 87NU3XASUN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyApplication/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "我想偷看你的相册";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -902,7 +952,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.lijiahao.MyApplication;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lijiahao.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
