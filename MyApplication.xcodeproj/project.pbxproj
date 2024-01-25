@@ -68,6 +68,8 @@
 		54134C822ADEEF24007FBE7C /* compare_gcc.cc in Sources */ = {isa = PBXBuildFile; fileRef = 54134C4A2ADEEF24007FBE7C /* compare_gcc.cc */; };
 		54134C832ADEEF24007FBE7C /* compare_neon64.cc in Sources */ = {isa = PBXBuildFile; fileRef = 54134C4B2ADEEF24007FBE7C /* compare_neon64.cc */; };
 		54134C842ADEEF24007FBE7C /* scale_argb.cc in Sources */ = {isa = PBXBuildFile; fileRef = 54134C4C2ADEEF24007FBE7C /* scale_argb.cc */; };
+		54374ADE2B62B5C700A16BE3 /* SegmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54374ADC2B62B5C700A16BE3 /* SegmentViewController.m */; };
+		54374ADF2B62B5C700A16BE3 /* SegmentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54374ADD2B62B5C700A16BE3 /* SegmentViewController.xib */; };
 		5458573E2B4AF6FD001E95A8 /* StackViewDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5458573C2B4AF6FD001E95A8 /* StackViewDemoViewController.m */; };
 		5458573F2B4AF6FD001E95A8 /* StackViewDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5458573D2B4AF6FD001E95A8 /* StackViewDemoViewController.xib */; };
 		54688CA22ABCC23C007F48E8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 54688CA12ABCC23C007F48E8 /* AppDelegate.m */; };
@@ -193,6 +195,9 @@
 		54134C4A2ADEEF24007FBE7C /* compare_gcc.cc */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = compare_gcc.cc; sourceTree = "<group>"; };
 		54134C4B2ADEEF24007FBE7C /* compare_neon64.cc */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = compare_neon64.cc; sourceTree = "<group>"; };
 		54134C4C2ADEEF24007FBE7C /* scale_argb.cc */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = scale_argb.cc; sourceTree = "<group>"; };
+		54374ADB2B62B5C700A16BE3 /* SegmentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SegmentViewController.h; sourceTree = "<group>"; };
+		54374ADC2B62B5C700A16BE3 /* SegmentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SegmentViewController.m; sourceTree = "<group>"; };
+		54374ADD2B62B5C700A16BE3 /* SegmentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SegmentViewController.xib; sourceTree = "<group>"; };
 		5458573B2B4AF6FD001E95A8 /* StackViewDemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StackViewDemoViewController.h; sourceTree = "<group>"; };
 		5458573C2B4AF6FD001E95A8 /* StackViewDemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StackViewDemoViewController.m; sourceTree = "<group>"; };
 		5458573D2B4AF6FD001E95A8 /* StackViewDemoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StackViewDemoViewController.xib; sourceTree = "<group>"; };
@@ -395,6 +400,16 @@
 			path = source;
 			sourceTree = "<group>";
 		};
+		54374ADA2B62B59600A16BE3 /* SegmentViewDemo */ = {
+			isa = PBXGroup;
+			children = (
+				54374ADB2B62B5C700A16BE3 /* SegmentViewController.h */,
+				54374ADC2B62B5C700A16BE3 /* SegmentViewController.m */,
+				54374ADD2B62B5C700A16BE3 /* SegmentViewController.xib */,
+			);
+			path = SegmentViewDemo;
+			sourceTree = "<group>";
+		};
 		5458573A2B4AF6D4001E95A8 /* StackViewDemo */ = {
 			isa = PBXGroup;
 			children = (
@@ -430,6 +445,7 @@
 		54688C9F2ABCC23C007F48E8 /* MyApplication */ = {
 			isa = PBXGroup;
 			children = (
+				54374ADA2B62B59600A16BE3 /* SegmentViewDemo */,
 				5458573A2B4AF6D4001E95A8 /* StackViewDemo */,
 				54CB9B962B39A01800AF9827 /* AudioChat */,
 				54134B3B2ADD8216007FBE7C /* YuvDemo */,
@@ -604,6 +620,7 @@
 				54134C802ADEEF24007FBE7C /* test.sh in Resources */,
 				5458573F2B4AF6FD001E95A8 /* StackViewDemoViewController.xib in Resources */,
 				54688CB02ABCC23D007F48E8 /* LaunchScreen.storyboard in Resources */,
+				54374ADF2B62B5C700A16BE3 /* SegmentViewController.xib in Resources */,
 				54688CAD2ABCC23D007F48E8 /* Assets.xcassets in Resources */,
 				54D9D1F72AF77FE300962B18 /* DemoView1.xib in Resources */,
 				54CB9B9B2B39BAA900AF9827 /* AudioChatViewController.xib in Resources */,
@@ -685,6 +702,7 @@
 				54134C662ADEEF24007FBE7C /* row_common.cc in Sources */,
 				54134C732ADEEF24007FBE7C /* scale_lsx.cc in Sources */,
 				54134C832ADEEF24007FBE7C /* compare_neon64.cc in Sources */,
+				54374ADE2B62B5C700A16BE3 /* SegmentViewController.m in Sources */,
 				54134C6D2ADEEF24007FBE7C /* row_any.cc in Sources */,
 				54688CA22ABCC23C007F48E8 /* AppDelegate.m in Sources */,
 				54134C5B2ADEEF24007FBE7C /* rotate_neon64.cc in Sources */,

@@ -11,6 +11,7 @@
 #import "YUVDemoViewController.h"
 #import "AudioChatViewController.h"
 #import "StackViewDemoViewController.h"
+#import "SegmentViewController.h"
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView* tableView;
@@ -28,6 +29,7 @@
     [self.tableArray addObjectsFromArray:@[@"YUVDemo"]];
     [self.tableArray addObjectsFromArray:@[@"AudioChat"]];
     [self.tableArray addObjectsFromArray:@[@"StackView"]];
+    [self.tableArray addObjectsFromArray:@[@"SegmentViewDemo"]];
     
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kWidth, kHeight)];
     self.tableView.estimatedRowHeight = 70;
@@ -97,6 +99,11 @@
         }
         case 3: {
             StackViewDemoViewController* vc = [StackViewDemoViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 4: {
+            SegmentViewController* vc = [SegmentViewController new];
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
