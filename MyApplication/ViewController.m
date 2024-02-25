@@ -12,11 +12,15 @@
 #import "AudioChatViewController.h"
 #import "StackViewDemoViewController.h"
 #import "SegmentViewController.h"
+#import "StackViewWithScrollViewDemoViewController.h"
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView* tableView;
-@property (nonatomic, strong) NSMutableArray* tableArray;
+@property (nonatomic, strong) NSArray<NSDictionary*>* tableArray;
 @end
+
+#define kItemName @"kItemName"
+#define kItemVc @"kItemVc"
 
 @implementation ViewController
 
@@ -25,11 +29,14 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [HSColorScheme colorBackground];
     
-    [self.tableArray addObjectsFromArray:@[@"Masonry"]];
-    [self.tableArray addObjectsFromArray:@[@"YUVDemo"]];
-    [self.tableArray addObjectsFromArray:@[@"AudioChat"]];
-    [self.tableArray addObjectsFromArray:@[@"StackView"]];
-    [self.tableArray addObjectsFromArray:@[@"SegmentViewDemo"]];
+    self.tableArray = @[
+        @{kItemName:@"Masonry", kItemVc:[MasonryDemoViewController new]},
+        @{kItemName:@"YUVDemo", kItemVc:[YUVDemoViewController new]},
+        @{kItemName:@"AudioChat", kItemVc:[AudioChatViewController new]},
+        @{kItemName:@"StackView", kItemVc:[StackViewDemoViewController new]},
+        @{kItemName:@"StackView with ScrollView", kItemVc:[StackViewWithScrollViewDemoViewController new]},
+        @{kItemName:@"SegmentViewDemo", kItemVc:[SegmentViewController new]},
+    ];
     
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kWidth, kHeight)];
     self.tableView.estimatedRowHeight = 70;
@@ -37,13 +44,6 @@
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor lightGrayColor];
     [self.view addSubview:self.tableView];
-}
-
-- (NSMutableArray *)tableArray {
-    if (_tableArray == nil) {
-        _tableArray = [NSMutableArray array];
-    }
-    return _tableArray;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -63,8 +63,8 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
-    
-    cell.textLabel.text = self.tableArray[indexPath.row];
+    NSDictionary* dict = self.tableArray[indexPath.row];
+    cell.textLabel.text = dict[kItemName];
     cell.textLabel.textColor = HSColorScheme.colorBlack;
     cell.layer.cornerRadius = 10;
     cell.backgroundColor = HSColorScheme.colorWhite;
@@ -82,33 +82,9 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch (indexPath.row) {
-        case 0:{
-            MasonryDemoViewController* vc = [MasonryDemoViewController new];
-            [self.navigationController pushViewController:vc animated:YES];
-            break;
-        }
-        case 1: {
-            YUVDemoViewController* vc = [YUVDemoViewController new];
-            [self.navigationController pushViewController:vc animated:YES];
-            break;
-        }
-        case 2: {
-            AudioChatViewController* vc = [AudioChatViewController new];
-            [self.navigationController pushViewController:vc animated:YES];
-            break;
-        }
-        case 3: {
-            StackViewDemoViewController* vc = [StackViewDemoViewController new];
-            [self.navigationController pushViewController:vc animated:YES];
-            break;
-        }
-        case 4: {
-            SegmentViewController* vc = [SegmentViewController new];
-            [self.navigationController pushViewController:vc animated:YES];
-            break;
-        }
-    }
+    NSDictionary* dict = self.tableArray[indexPath.row];
+    UIViewController* vc = dict[kItemVc];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

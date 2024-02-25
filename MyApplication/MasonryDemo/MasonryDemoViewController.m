@@ -26,15 +26,12 @@
 }
 
 -(void) createView {
-    UIView* rootView = [[UIView alloc]initWithFrame:CGRectMake(50, 200, 0, 0)];
-    [self.view addSubview:rootView];
-    
     UIView* contentView = [UIView new];
     contentView.backgroundColor = [UIColor lightGrayColor];
-    [rootView addSubview:contentView];
+    [self.view addSubview:contentView];
     [contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(contentView);
-        make.bottom.mas_equalTo(contentView);
+        make.top.mas_equalTo(self.view).offset(200);
+        make.leading.mas_equalTo(self.view).offset(100);
     }];
     
     UIView1* view1 = [UIView1 new];
@@ -46,6 +43,8 @@
         make.height.mas_equalTo(100);
         make.top.mas_greaterThanOrEqualTo(contentView);
         make.bottom.mas_lessThanOrEqualTo(contentView);
+        make.top.mas_equalTo(contentView).priority(249);
+        make.bottom.mas_equalTo(contentView).priority(249);
     }];
     
     UIView2* view2 = [UIView2 new];
@@ -58,6 +57,8 @@
         make.centerY.mas_equalTo(view1);
         make.top.mas_greaterThanOrEqualTo(contentView);
         make.bottom.mas_lessThanOrEqualTo(contentView);
+        make.top.mas_equalTo(contentView).priority(249);
+        make.bottom.mas_equalTo(contentView).priority(249);
     }];
     
     UIView3* view3 = [UIView3 new];
@@ -71,6 +72,9 @@
         make.centerY.mas_equalTo(view1);
         make.top.mas_greaterThanOrEqualTo(contentView);
         make.bottom.mas_lessThanOrEqualTo(contentView);
+        make.top.mas_equalTo(contentView).priority(249);
+        make.bottom.mas_equalTo(contentView).priority(249);
+
     }];
 }
 
