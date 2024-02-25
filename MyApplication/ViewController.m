@@ -68,6 +68,7 @@
     cell.textLabel.textColor = HSColorScheme.colorBlack;
     cell.layer.cornerRadius = 10;
     cell.backgroundColor = HSColorScheme.colorWhite;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

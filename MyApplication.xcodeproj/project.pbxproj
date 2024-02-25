@@ -83,7 +83,13 @@
 		54CB9B9A2B39BAA900AF9827 /* AudioChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CB9B982B39BAA900AF9827 /* AudioChatViewController.m */; };
 		54CB9B9B2B39BAA900AF9827 /* AudioChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54CB9B992B39BAA900AF9827 /* AudioChatViewController.xib */; };
 		54CB9B9E2B39CF4700AF9827 /* AudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CB9B9D2B39CF4700AF9827 /* AudioManager.m */; };
+		54D187EB2B8AE60A00F7C1D2 /* UIView1.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D187EA2B8AE60A00F7C1D2 /* UIView1.m */; };
+		54D187EE2B8AE6AC00F7C1D2 /* UIView2.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D187ED2B8AE6AC00F7C1D2 /* UIView2.m */; };
 		54D9D1F72AF77FE300962B18 /* DemoView1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54D9D1F62AF77FE300962B18 /* DemoView1.xib */; };
+		54FB17372B8B2208000DE3D7 /* UIView3.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB17362B8B2208000DE3D7 /* UIView3.m */; };
+		54FB173A2B8B2660000DE3D7 /* UILabel1.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB17392B8B2660000DE3D7 /* UILabel1.m */; };
+		54FB173D2B8B2735000DE3D7 /* UILabel2.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB173C2B8B2735000DE3D7 /* UILabel2.m */; };
+		54FB17402B8B2743000DE3D7 /* UILabel3.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB173F2B8B2743000DE3D7 /* UILabel3.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -220,7 +226,19 @@
 		54CB9B992B39BAA900AF9827 /* AudioChatViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AudioChatViewController.xib; sourceTree = "<group>"; };
 		54CB9B9C2B39CF4700AF9827 /* AudioManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioManager.h; sourceTree = "<group>"; };
 		54CB9B9D2B39CF4700AF9827 /* AudioManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioManager.m; sourceTree = "<group>"; };
+		54D187E92B8AE60A00F7C1D2 /* UIView1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIView1.h; sourceTree = "<group>"; };
+		54D187EA2B8AE60A00F7C1D2 /* UIView1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIView1.m; sourceTree = "<group>"; };
+		54D187EC2B8AE6AC00F7C1D2 /* UIView2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIView2.h; sourceTree = "<group>"; };
+		54D187ED2B8AE6AC00F7C1D2 /* UIView2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIView2.m; sourceTree = "<group>"; };
 		54D9D1F62AF77FE300962B18 /* DemoView1.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DemoView1.xib; sourceTree = "<group>"; };
+		54FB17352B8B2208000DE3D7 /* UIView3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIView3.h; sourceTree = "<group>"; };
+		54FB17362B8B2208000DE3D7 /* UIView3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIView3.m; sourceTree = "<group>"; };
+		54FB17382B8B2660000DE3D7 /* UILabel1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UILabel1.h; sourceTree = "<group>"; };
+		54FB17392B8B2660000DE3D7 /* UILabel1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UILabel1.m; sourceTree = "<group>"; };
+		54FB173B2B8B2735000DE3D7 /* UILabel2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UILabel2.h; sourceTree = "<group>"; };
+		54FB173C2B8B2735000DE3D7 /* UILabel2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UILabel2.m; sourceTree = "<group>"; };
+		54FB173E2B8B2743000DE3D7 /* UILabel3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UILabel3.h; sourceTree = "<group>"; };
+		54FB173F2B8B2743000DE3D7 /* UILabel3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UILabel3.m; sourceTree = "<group>"; };
 		75BAAB4BF0ECAC0293A9691B /* Pods-MyApplication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyApplication.debug.xcconfig"; path = "Target Support Files/Pods-MyApplication/Pods-MyApplication.debug.xcconfig"; sourceTree = "<group>"; };
 		E096DE66C3698E2F71727597 /* Pods-MyApplication.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyApplication.release.xcconfig"; path = "Target Support Files/Pods-MyApplication/Pods-MyApplication.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -416,6 +434,18 @@
 				5458573B2B4AF6FD001E95A8 /* StackViewDemoViewController.h */,
 				5458573C2B4AF6FD001E95A8 /* StackViewDemoViewController.m */,
 				5458573D2B4AF6FD001E95A8 /* StackViewDemoViewController.xib */,
+				54D187E92B8AE60A00F7C1D2 /* UIView1.h */,
+				54D187EA2B8AE60A00F7C1D2 /* UIView1.m */,
+				54D187EC2B8AE6AC00F7C1D2 /* UIView2.h */,
+				54D187ED2B8AE6AC00F7C1D2 /* UIView2.m */,
+				54FB17352B8B2208000DE3D7 /* UIView3.h */,
+				54FB17362B8B2208000DE3D7 /* UIView3.m */,
+				54FB17382B8B2660000DE3D7 /* UILabel1.h */,
+				54FB17392B8B2660000DE3D7 /* UILabel1.m */,
+				54FB173B2B8B2735000DE3D7 /* UILabel2.h */,
+				54FB173C2B8B2735000DE3D7 /* UILabel2.m */,
+				54FB173E2B8B2743000DE3D7 /* UILabel3.h */,
+				54FB173F2B8B2743000DE3D7 /* UILabel3.m */,
 			);
 			path = StackViewDemo;
 			sourceTree = "<group>";
@@ -706,6 +736,7 @@
 				54134C6D2ADEEF24007FBE7C /* row_any.cc in Sources */,
 				54688CA22ABCC23C007F48E8 /* AppDelegate.m in Sources */,
 				54134C5B2ADEEF24007FBE7C /* rotate_neon64.cc in Sources */,
+				54D187EB2B8AE60A00F7C1D2 /* UIView1.m in Sources */,
 				54134C4D2ADEEF24007FBE7C /* yuv_compress.cc in Sources */,
 				54134C722ADEEF24007FBE7C /* scale_msa.cc in Sources */,
 				54134C592ADEEF24007FBE7C /* mjpeg_decoder.cc in Sources */,
@@ -724,6 +755,7 @@
 				54134C7F2ADEEF24007FBE7C /* row_gcc.cc in Sources */,
 				54134C4F2ADEEF24007FBE7C /* rotate_common.cc in Sources */,
 				54134C612ADEEF24007FBE7C /* compare_msa.cc in Sources */,
+				54FB173D2B8B2735000DE3D7 /* UILabel2.m in Sources */,
 				54134C6F2ADEEF24007FBE7C /* convert_to_argb.cc in Sources */,
 				54134C782ADEEF24007FBE7C /* rotate_msa.cc in Sources */,
 				54134C602ADEEF24007FBE7C /* convert_from_argb.cc in Sources */,
@@ -745,6 +777,7 @@
 				54134C812ADEEF24007FBE7C /* rotate_argb.cc in Sources */,
 				54134C772ADEEF24007FBE7C /* compare_common.cc in Sources */,
 				54134C5D2ADEEF24007FBE7C /* scale.cc in Sources */,
+				54FB17372B8B2208000DE3D7 /* UIView3.m in Sources */,
 				54134C822ADEEF24007FBE7C /* compare_gcc.cc in Sources */,
 				54134C6A2ADEEF24007FBE7C /* convert_from.cc in Sources */,
 				54134C6E2ADEEF24007FBE7C /* scale_uv.cc in Sources */,
@@ -752,9 +785,12 @@
 				54134C5F2ADEEF24007FBE7C /* row_neon64.cc in Sources */,
 				54134C792ADEEF24007FBE7C /* rotate_lsx.cc in Sources */,
 				54134C542ADEEF24007FBE7C /* scale_gcc.cc in Sources */,
+				54D187EE2B8AE6AC00F7C1D2 /* UIView2.m in Sources */,
 				54134B3E2ADD822D007FBE7C /* YUVDemoViewController.m in Sources */,
+				54FB173A2B8B2660000DE3D7 /* UILabel1.m in Sources */,
 				54134C742ADEEF24007FBE7C /* scale_neon64.cc in Sources */,
 				54134B3A2AD784D4007FBE7C /* MasonryDemoViewController.m in Sources */,
+				54FB17402B8B2743000DE3D7 /* UILabel3.m in Sources */,
 				54134C652ADEEF24007FBE7C /* convert_argb.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
