@@ -13,6 +13,8 @@
 #import "StackViewDemoViewController.h"
 #import "SegmentViewController.h"
 #import "StackViewWithScrollViewDemoViewController.h"
+#import "MemoryDemo/MemoryDemoViewController.h"
+#import "AudioDemo/AudioViewController.h"
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView* tableView;
@@ -30,13 +32,16 @@
     self.view.backgroundColor = [HSColorScheme colorBackground];
     
     self.tableArray = @[
-        @{kItemName:@"Masonry", kItemVc:[MasonryDemoViewController new]},
-        @{kItemName:@"YUVDemo", kItemVc:[YUVDemoViewController new]},
-        @{kItemName:@"AudioChat", kItemVc:[AudioChatViewController new]},
-        @{kItemName:@"StackView", kItemVc:[StackViewDemoViewController new]},
-        @{kItemName:@"StackView with ScrollView", kItemVc:[StackViewWithScrollViewDemoViewController new]},
-        @{kItemName:@"SegmentViewDemo", kItemVc:[SegmentViewController new]},
+        @{kItemName:@"Masonry", kItemVc:[MasonryDemoViewController class]},
+        @{kItemName:@"YUVDemo", kItemVc:[YUVDemoViewController class]},
+        @{kItemName:@"AudioChat", kItemVc:[AudioChatViewController class]},
+        @{kItemName:@"StackView", kItemVc:[StackViewDemoViewController class]},
+        @{kItemName:@"StackView with ScrollView", kItemVc:[StackViewWithScrollViewDemoViewController class]},
+        @{kItemName:@"SegmentViewDemo", kItemVc:[SegmentViewController class]},
+        @{kItemName:@"MemoryDemo", kItemVc:[MemoryDemoViewController class]},
+        @{kItemName:@"AudioDemo", kItemVc:[AudioViewController class]},
     ];
+
     
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kWidth, kHeight)];
     self.tableView.estimatedRowHeight = 70;
@@ -83,7 +88,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary* dict = self.tableArray[indexPath.row];
-    UIViewController* vc = dict[kItemVc];
+    UIViewController* vc = [dict[kItemVc] new];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

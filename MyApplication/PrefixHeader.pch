@@ -19,6 +19,9 @@
 #define appDelegate (AppDelegate*)([UIApplication sharedApplication].delegate);
 #define sceneDelegate (SceneDelegate*)[[UIApplication sharedApplication].connectedScenes anyObject].delegate
 
+#define X_WeakSelf __weak typeof(self) weakSelf = self;
+#define X_StrongSelf __strong typeof(weakSelf) strongSelf = weakSelf;
+
 #import "HSColorUtils.h"
 #import "AppDelegate.h"
 #import "SceneDelegate.h"
