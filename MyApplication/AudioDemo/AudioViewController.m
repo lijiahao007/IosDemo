@@ -11,7 +11,11 @@
 #import "PermissionManager.h"
 
 @interface AudioViewController () <AudioOutputDelegate>
+@property (weak, nonatomic) IBOutlet UILabel *rateLabel;
 @property (nonatomic, strong) AudioOutput* audioOutput;
+@property (weak, nonatomic) IBOutlet UISwitch *playSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *recordSwitch;
+@property (nonatomic, assign) long prevTime;
 @end
 
 @implementation AudioViewController
@@ -28,7 +32,16 @@
     float bufferDuration = 0.064;
     [self SetAudioSessionWithTime:bufferDuration];
 
+    _rateLabel.text = [NSString stringWithFormat:@"%.2f", 1.0];
+    _playSwitch.on = YES;
+    _recordSwitch.on = YES;
+    [_playSwitch addTarget:self action:@selector(switchStateChange:) forControlEvents:UIControlEventValueChanged];
+    [_recordSwitch addTarget:self action:@selector(switchStateChange:) forControlEvents:UIControlEventValueChanged];
+    
 
+    self.rateLabel.text = [NSString stringWithFormat:@"%.2f", self.audioOutput.rate];
+    self.playSwitch.on = self.audioOutput.enablePlay;
+    self.recordSwitch.on = self.audioOutput.enableRecord;
 }
 
 - (IBAction)startPlay:(id)sender {
@@ -39,11 +52,14 @@
         if (!isPermission) {
             return;
         }
-        if (strongSelf.audioOutput == nil) {
-            strongSelf.audioOutput = [[AudioOutput alloc]init];
-            strongSelf.audioOutput.delegate = strongSelf;
-        }
         
+        if (strongSelf.audioOutput == nil) {
+            BOOL enableRecord = strongSelf.recordSwitch.on;
+            BOOL enablePlay = strongSelf.playSwitch.on;
+            strongSelf.audioOutput = [[AudioOutput alloc]initWithSampleRate:16000 enableRecord:enableRecord enablePlay:enablePlay rate:1.0];
+            strongSelf.audioOutput.delegate = self;
+        }
+
         [strongSelf.audioOutput play];
     }];
   
@@ -54,15 +70,40 @@
         [_audioOutput stop];
     }
 }
+- (IBAction)clickPlus:(id)sender {
+    if (_audioOutput) {
+        float rate = _audioOutput.rate + 0.1;
+        rate = MIN(32.0, rate);
+        _audioOutput.rate = rate;
+        _rateLabel.text = [NSString stringWithFormat:@"%.2f", _audioOutput.rate];
+    }
+}
 
+- (IBAction)clickMinus:(id)sender {
+    if (_audioOutput) {
+        float rate = _audioOutput.rate - 0.1;
+        rate = MAX(1.0/32, rate);
+        _audioOutput.rate = rate;
+        _rateLabel.text = [NSString stringWithFormat:@"%.2f", _audioOutput.rate];
+    }
+}
 
 - (void)getRecordData:(nullable SInt8 *)buffer byteSize:(int)byteSize { 
     NSLog(@"getRecordData byteSize:%d", byteSize);
 }
 
-- (void)requestAudioFrame:(nonnull SInt16 *)buffer numFrames:(int)numFrames { 
-    NSLog(@"requestAudioFrame numFrames:%d", numFrames);
+- (void)requestAudioFrame:(nonnull SInt16 *)buffer numFrames:(int)numFrames {
+    long now = [self getNowMillis];
+    long distance = now - self.prevTime;
+    self.prevTime = now;
+    NSLog(@"requestAudioFrame numFrames:%d dis:[%ld]", numFrames, distance);
     memset(buffer, 0, sizeof(SInt16) * numFrames);
+    
+    
+}
+
+-(long) getNowMillis {
+    return [[NSDate date] timeIntervalSince1970] * 1000;
 }
 
 
@@ -72,6 +113,36 @@
     [session setPreferredIOBufferDuration:second error:nil];
     [session setActive:YES error:nil];
     
+}
+
+- (void)switchStateChange:(id)sender {
+    UISwitch* sw = (UISwitch*) sender;
+    if (_audioOutput == nil) return;
+    BOOL isRunning = _audioOutput.isRunning;
+    BOOL enableRecord = _audioOutput.enableRecord;
+    BOOL enablePlay = _audioOutput.enablePlay;
+    float rate = _audioOutput.rate;
+    
+    [_audioOutput stop];
+//    [_audioOutput destroyAudioOutput];
+    _audioOutput = nil;
+    
+    X_WeakSelf
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//    dispatch_async(dispatch_get_main_queue(), ^{
+        X_StrongSelf
+        if (sender == strongSelf.playSwitch) {
+            strongSelf.audioOutput = [[AudioOutput alloc]initWithSampleRate:16000 enableRecord:enableRecord enablePlay:sw.on rate:rate];
+        } else if (sender == self.recordSwitch) {
+            strongSelf.audioOutput = [[AudioOutput alloc]initWithSampleRate:16000 enableRecord:sw.on enablePlay:enablePlay rate:rate];
+        }
+        strongSelf.audioOutput.delegate = self;
+
+        if (isRunning) {
+            [strongSelf.audioOutput play];
+        }
+//    });
+ 
 }
 
 
