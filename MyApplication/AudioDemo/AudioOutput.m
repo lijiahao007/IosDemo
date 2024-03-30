@@ -81,7 +81,7 @@ static OSStatus RecordCallback(void *inRefCon,
         _rate = rate;
         _isRunning = NO;
         
-        // PS 至少有一个
+        // PS：至少要播放或者录制。如果两个都没有，就没有必要创建AuGraph了。
         if (_enablePlay || _enableRecord) {
             [self createAudioUnitGraph];
         }
@@ -131,6 +131,7 @@ static OSStatus RecordCallback(void *inRefCon,
     
     [self getUnitFromNode];
     [self setUnitScopeEnable];
+    [self setTimePitchRate];
     [self setAudioUnitProperties];
     
     [self makeNodeConnections];
@@ -186,12 +187,12 @@ static OSStatus RecordCallback(void *inRefCon,
 -(void) setUnitScopeEnable {
     OSStatus status = noErr;
     
-    // 启用播放
+    // 连接扬声器
     UInt32 enablePlay = _enablePlay ? 1 : 0;
     status = AudioUnitSetProperty(_ioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Output, outputElement, &enablePlay, sizeof(enablePlay));
     CheckStatus(status, @"Cloud not SetEnable for ioUnit outputElement outputScope", YES);
     
-    // 启用录音
+    // 连接麦克风
     UInt32 enableRecord = _enableRecord ? 1 : 0;
     status = AudioUnitSetProperty(_ioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, inputElement, &enableRecord, sizeof(enableRecord));
     CheckStatus(status, @"Cloud not setEnable for io Unit inputElement inputScope", YES);
@@ -206,8 +207,10 @@ static OSStatus RecordCallback(void *inRefCon,
     // 输入端输出格式
     status = AudioUnitSetProperty(_ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, inputElement, &description, sizeof(description));
     CheckStatus(status, @"Could not set stream format on I/O unit inputElement output scope", YES);
-
-//    
+    status = AudioUnitSetProperty(_ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, outputElement, &description, sizeof(description));
+    CheckStatus(status, @"Could not set stream format on I/O unit outputElement input Scope", YES);
+    
+//
 //    status = AudioUnitSetProperty(_timePitchUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, outputElement, &description, sizeof(description));
 //    CheckStatus(status, @"Could not set stream format on timePitch Unit outputElement output scope", YES);
 //    status = AudioUnitSetProperty(_timePitchUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, outputElement, &description, sizeof(description));
@@ -226,7 +229,7 @@ static OSStatus RecordCallback(void *inRefCon,
     callbackStruct.inputProc = &InputRenderCallback;
     callbackStruct.inputProcRefCon = (__bridge void *)self;
     status = AudioUnitSetProperty(_timePitchUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, outputElement, &callbackStruct, sizeof(callbackStruct));
-    CheckStatus(status, @"Could not set render callback on timePitch input scope, element 1", YES);
+    CheckStatus(status, @"Could not set render callback on timePitch input scope, element 0", YES);
 
     AURenderCallbackStruct recordCallbackStruct;
     recordCallbackStruct.inputProc = &RecordCallback;

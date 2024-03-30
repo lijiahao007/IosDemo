@@ -60,6 +60,7 @@
             strongSelf.audioOutput.delegate = self;
         }
 
+        strongSelf.rateLabel.text = [NSString stringWithFormat:@"%f", strongSelf.audioOutput.rate];
         [strongSelf.audioOutput play];
     }];
   
@@ -97,9 +98,7 @@
     long distance = now - self.prevTime;
     self.prevTime = now;
     NSLog(@"requestAudioFrame numFrames:%d dis:[%ld]", numFrames, distance);
-    memset(buffer, 0, sizeof(SInt16) * numFrames);
-    
-    
+    memset(buffer, 100, sizeof(SInt16) * numFrames);
 }
 
 -(long) getNowMillis {
@@ -124,25 +123,18 @@
     float rate = _audioOutput.rate;
     
     [_audioOutput stop];
-//    [_audioOutput destroyAudioOutput];
     _audioOutput = nil;
     
-    X_WeakSelf
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//    dispatch_async(dispatch_get_main_queue(), ^{
-        X_StrongSelf
-        if (sender == strongSelf.playSwitch) {
-            strongSelf.audioOutput = [[AudioOutput alloc]initWithSampleRate:16000 enableRecord:enableRecord enablePlay:sw.on rate:rate];
-        } else if (sender == self.recordSwitch) {
-            strongSelf.audioOutput = [[AudioOutput alloc]initWithSampleRate:16000 enableRecord:sw.on enablePlay:enablePlay rate:rate];
-        }
-        strongSelf.audioOutput.delegate = self;
+    if (sender == self.playSwitch) {
+        self.audioOutput = [[AudioOutput alloc]initWithSampleRate:16000 enableRecord:enableRecord enablePlay:sw.on rate:rate];
+    } else if (sender == self.recordSwitch) {
+        self.audioOutput = [[AudioOutput alloc]initWithSampleRate:16000 enableRecord:sw.on enablePlay:enablePlay rate:rate];
+    }
+    self.audioOutput.delegate = self;
 
-        if (isRunning) {
-            [strongSelf.audioOutput play];
-        }
-//    });
- 
+    self.rateLabel.text = [NSString stringWithFormat:@"%f", self.audioOutput.rate];
+    [self.audioOutput play];
+
 }
 
 
