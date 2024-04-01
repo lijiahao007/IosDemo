@@ -49,7 +49,6 @@
                             <buttonConfiguration key="configuration" style="plain" title="-"/>
                             <connections>
                                 <action selector="clickMinus:" destination="-1" eventType="touchUpInside" id="0Lv-f2-0Ug"/>
-                                <action selector="clickPlus:" destination="-1" eventType="touchUpInside" id="W4Y-Zg-Klr"/>
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MCn-cM-2h8">

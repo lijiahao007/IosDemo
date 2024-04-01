@@ -38,7 +38,10 @@
     [_playSwitch addTarget:self action:@selector(switchStateChange:) forControlEvents:UIControlEventValueChanged];
     [_recordSwitch addTarget:self action:@selector(switchStateChange:) forControlEvents:UIControlEventValueChanged];
     
-
+    if (_audioOutput == nil) {
+        _audioOutput = [[AudioOutput alloc]initWithSampleRate:16000 enableRecord:NO enablePlay:NO rate:1.0];
+        _audioOutput.delegate = self;
+    }
     self.rateLabel.text = [NSString stringWithFormat:@"%.2f", self.audioOutput.rate];
     self.playSwitch.on = self.audioOutput.enablePlay;
     self.recordSwitch.on = self.audioOutput.enableRecord;
@@ -53,12 +56,7 @@
             return;
         }
         
-        if (strongSelf.audioOutput == nil) {
-            BOOL enableRecord = strongSelf.recordSwitch.on;
-            BOOL enablePlay = strongSelf.playSwitch.on;
-            strongSelf.audioOutput = [[AudioOutput alloc]initWithSampleRate:16000 enableRecord:enableRecord enablePlay:enablePlay rate:1.0];
-            strongSelf.audioOutput.delegate = self;
-        }
+       
 
         strongSelf.rateLabel.text = [NSString stringWithFormat:@"%f", strongSelf.audioOutput.rate];
         [strongSelf.audioOutput play];
@@ -126,25 +124,14 @@
 
 - (void)switchStateChange:(id)sender {
     UISwitch* sw = (UISwitch*) sender;
-    if (_audioOutput == nil) return;
-    BOOL isRunning = _audioOutput.isRunning;
-    BOOL enableRecord = _audioOutput.enableRecord;
-    BOOL enablePlay = _audioOutput.enablePlay;
-    float rate = _audioOutput.rate;
-    
-    [_audioOutput stop];
-    _audioOutput = nil;
     
     if (sender == self.playSwitch) {
-        self.audioOutput = [[AudioOutput alloc]initWithSampleRate:16000 enableRecord:enableRecord enablePlay:sw.on rate:rate];
+        self.audioOutput.enablePlay = sw.on;
     } else if (sender == self.recordSwitch) {
-        self.audioOutput = [[AudioOutput alloc]initWithSampleRate:16000 enableRecord:sw.on enablePlay:enablePlay rate:rate];
+        self.audioOutput.enableRecord = sw.on;
     }
-    self.audioOutput.delegate = self;
-
-    self.rateLabel.text = [NSString stringWithFormat:@"%f", self.audioOutput.rate];
-    [self.audioOutput play];
-
+    
+    _rateLabel.text = [NSString stringWithFormat:@"%.2f", _audioOutput.rate];
 }
 
 

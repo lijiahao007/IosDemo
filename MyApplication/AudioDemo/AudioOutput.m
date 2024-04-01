@@ -23,12 +23,10 @@
  * 5:Initialize AudioUnit
  * 6:AudioOutputUnitStart
  *
- * AudioOutput 一次只能创建一次
  
  改变graph流程 ：stop graph（must）-> edit graph(remove/add/connect/disconnect node..., update to be changed) -> graph update（graph changed）->start graph(optional)
  改变property： stop graph（must）-> change property ->start graph(optional)
  改变pramater：change pramater
- 
  *
  **/
 
@@ -126,11 +124,75 @@ static OSStatus RecordCallback(void *inRefCon,
 
 
 - (void)setEnablePlay:(BOOL)enablePlay {
+    if (_enablePlay == enablePlay) return;
+    
     _enablePlay = enablePlay;
+    
+    OSStatus status;
+    if (_isRunning) {
+        status = AUGraphStop(_progressGraph);
+        CheckStatus(status, @"Could not stop AUGraph enablePlay", YES);
+    }
+    
+    if (_isInitGraph) {
+        status = AUGraphUninitialize(_progressGraph);
+        CheckStatus(status, @"Could not uninit AUGraph enablePlay", YES);
+    }
+ 
+
+    if (_enablePlay || _enableRecord) {
+        if (!_isInitGraph) {
+            [self createAudioUnitGraph];
+        } else {
+            [self setUnitScopeEnable];
+            status = AUGraphInitialize(_progressGraph);
+            CheckStatus(status, @"Could not init AUGraph enablePlay", YES);
+            _isInitGraph = YES;
+        }
+       
+        if (_isRunning) {
+            status = AUGraphStart(_progressGraph);
+            CheckStatus(status, @"Could not start AUGraph enablePlay", YES);
+        }
+    } else {
+        _isRunning = NO;
+        _isInitGraph = NO;
+    }
 }
 
 - (void)setEnableRecord:(BOOL)enableRecord {
+    if (_enableRecord == enableRecord) return;
+    
     _enableRecord = enableRecord;
+    OSStatus status;
+    
+    if (_isRunning) {
+        status = AUGraphStop(_progressGraph);
+        CheckStatus(status, @"Could not stop AUGraph enableRecord", YES);
+    }
+    
+    if (_isInitGraph) {
+        status = AUGraphUninitialize(_progressGraph);
+        CheckStatus(status, @"Could not uninit AUGraph enableRecord", YES);
+    }
+
+    if (_enablePlay || _enableRecord) {
+        if (!_isInitGraph) {
+            [self createAudioUnitGraph];
+        } else {
+            [self setUnitScopeEnable];
+            status = AUGraphInitialize(_progressGraph);
+            CheckStatus(status, @"Could not init AUGraph enableRecord", YES);
+        }
+       
+        if (_isRunning) {
+            status = AUGraphStart(_progressGraph);
+            CheckStatus(status, @"Could not start AUGraph enableRecord", YES);
+        }
+    } else {
+        _isRunning = NO;
+        _isInitGraph = NO;
+    }
 }
 
 -(void) setTimePitchRate {
@@ -432,7 +494,7 @@ static OSStatus InputRenderCallback(void *inRefCon,
                                     UInt32 inNumberFrames,
                                     AudioBufferList *ioData) {
     AudioOutput *player = (__bridge AudioOutput*)inRefCon;
-    return [player renderData:ioData 
+    return [player renderData:ioData
                   atTimeStamp:inTimeStamp
                    forElement:inBusNumber
                  numberFrames:inNumberFrames
