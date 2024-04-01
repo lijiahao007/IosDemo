@@ -57,8 +57,10 @@ static OSStatus RecordCallback(void *inRefCon,
 @property (nonatomic, assign) AUGraph progressGraph;
 @property (nonatomic, assign) AUNode ioNode;
 @property (nonatomic, assign) AUNode timePitchNode;
+@property (nonatomic, assign) AUNode mixNode;
 @property (nonatomic, assign) AudioUnit ioUnit;
 @property (nonatomic, assign) AudioUnit timePitchUnit;
+@property (nonatomic, assign) AudioUnit mixUnit;
 @property (nonatomic, assign) SInt16* outBuffer;
 @property (nonatomic, assign) BOOL enableRecord; // 是否启动录音
 @property (nonatomic, assign) BOOL enablePlay; // 是否启动播放
@@ -131,7 +133,7 @@ static OSStatus RecordCallback(void *inRefCon,
     
     [self getUnitFromNode];
     [self setUnitScopeEnable];
-    [self setTimePitchRate];
+//    [self setTimePitchRate];
     [self setAudioUnitProperties];
     
     [self makeNodeConnections];
@@ -158,14 +160,24 @@ static OSStatus RecordCallback(void *inRefCon,
     CheckStatus(status, @"Could not add I/O node to AUGraph", YES);
 
     
-    AudioComponentDescription timePitchDescription;
-    timePitchDescription.componentType = kAudioUnitType_FormatConverter;
-    timePitchDescription.componentSubType = kAudioUnitSubType_NewTimePitch;
-    timePitchDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
-    timePitchDescription.componentFlags = 0;
-    timePitchDescription.componentFlagsMask = 0;
-    status = AUGraphAddNode(_progressGraph, &timePitchDescription, &_timePitchNode);
-    CheckStatus(status, @"Could not add TimePitch node to AUGraph", YES);
+//    AudioComponentDescription timePitchDescription;
+//    timePitchDescription.componentType = kAudioUnitType_FormatConverter;
+//    timePitchDescription.componentSubType = kAudioUnitSubType_NewTimePitch;
+//    timePitchDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
+//    timePitchDescription.componentFlags = 0;
+//    timePitchDescription.componentFlagsMask = 0;
+//    status = AUGraphAddNode(_progressGraph, &timePitchDescription, &_timePitchNode);
+//    CheckStatus(status, @"Could not add TimePitch node to AUGraph", YES);
+    
+    AudioComponentDescription mixDescription;
+    mixDescription.componentType = kAudioUnitType_Mixer;
+    mixDescription.componentSubType = kAudioUnitSubType_MultiChannelMixer;
+    mixDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
+    mixDescription.componentFlags = 0;
+    mixDescription.componentFlagsMask = 0;
+    status = AUGraphAddNode(_progressGraph, &mixDescription, &_mixNode);
+    CheckStatus(status, @"Could not add Mix node to AUGraph", YES);
+    
 }
 
 
@@ -175,8 +187,11 @@ static OSStatus RecordCallback(void *inRefCon,
     status = AUGraphNodeInfo(_progressGraph, _ioNode, NULL, &_ioUnit);
     CheckStatus(status, @"Could not retrieve node info for I/O node", YES);
     
-    status = AUGraphNodeInfo(_progressGraph, _timePitchNode, NULL, &_timePitchUnit);
-    CheckStatus(status, @"Could not retrieve node info for TimePitch node", YES);
+//    status = AUGraphNodeInfo(_progressGraph, _timePitchNode, NULL, &_timePitchUnit);
+//    CheckStatus(status, @"Could not retrieve node info for TimePitch node", YES);
+//    
+    status = AUGraphNodeInfo(_progressGraph, _mixNode, NULL, &_mixUnit);
+    CheckStatus(status, @"Could not retrieve node info for Mix node", YES);
 }
 
 /**
@@ -202,19 +217,21 @@ static OSStatus RecordCallback(void *inRefCon,
 -(void) setAudioUnitProperties {
     OSStatus status = noErr;
     
-    AudioStreamBasicDescription description = [self getStreamFormat];
+    AudioStreamBasicDescription description16i = [self get16intStreamFormat];
+    AudioStreamBasicDescription description32f = [self get32floatStreamFormat];
     
     // 输入端输出格式
-    status = AudioUnitSetProperty(_ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, inputElement, &description, sizeof(description));
+    status = AudioUnitSetProperty(_ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, inputElement, &description16i, sizeof(description16i));
     CheckStatus(status, @"Could not set stream format on I/O unit inputElement output scope", YES);
-    status = AudioUnitSetProperty(_ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, outputElement, &description, sizeof(description));
+    status = AudioUnitSetProperty(_ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, outputElement, &description16i, sizeof(description16i));
     CheckStatus(status, @"Could not set stream format on I/O unit outputElement input Scope", YES);
     
-//
-//    status = AudioUnitSetProperty(_timePitchUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, outputElement, &description, sizeof(description));
-//    CheckStatus(status, @"Could not set stream format on timePitch Unit outputElement output scope", YES);
-//    status = AudioUnitSetProperty(_timePitchUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, outputElement, &description, sizeof(description));
-//    CheckStatus(status, @"Could not set stream format on timePitch Unit outputElement input scope", YES);
+//    status = AudioUnitSetProperty(_timePitchUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, outputElement, &description32f, sizeof(description32f));
+//    CheckStatus(status, @"Could not set stream format on _timePitchUnit outputElement output Scope", YES);
+    
+    
+    status = AudioUnitSetProperty(_ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, outputElement, &description16i, sizeof(description16i));
+    CheckStatus(status, @"Could not set stream format on I/O unit outputElement input Scope", YES);
     
 }
 
@@ -222,13 +239,13 @@ static OSStatus RecordCallback(void *inRefCon,
     OSStatus status = noErr;
     
     // 将 （timePitchNode的element0的outputScope） 与 （ioNode的element0的inputScope） 连接在一起。
-    status = AUGraphConnectNodeInput(_progressGraph, _timePitchNode, 0, _ioNode, 0);
-    CheckStatus(status, @"Could not connect I/O node input to timePitch node input", YES);
+//    status = AUGraphConnectNodeInput(_progressGraph, _timePitchNode, 0, _ioNode, 0);
+//    CheckStatus(status, @"Could not connect I/O node input to timePitch node input", YES);
     
     AURenderCallbackStruct callbackStruct;
     callbackStruct.inputProc = &InputRenderCallback;
     callbackStruct.inputProcRefCon = (__bridge void *)self;
-    status = AudioUnitSetProperty(_timePitchUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, outputElement, &callbackStruct, sizeof(callbackStruct));
+    status = AudioUnitSetProperty(_ioUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, outputElement, &callbackStruct, sizeof(callbackStruct));
     CheckStatus(status, @"Could not set render callback on timePitch input scope, element 0", YES);
 
     AURenderCallbackStruct recordCallbackStruct;
@@ -239,7 +256,7 @@ static OSStatus RecordCallback(void *inRefCon,
 }
 
 
--(AudioStreamBasicDescription) getStreamFormat {
+-(AudioStreamBasicDescription) get16intStreamFormat {
     AudioStreamBasicDescription streamDescription;
     streamDescription.mSampleRate = _sampleRate;
     streamDescription.mFormatID = kAudioFormatLinearPCM;
@@ -250,11 +267,24 @@ static OSStatus RecordCallback(void *inRefCon,
     streamDescription.mBytesPerPacket = streamDescription.mBytesPerFrame *streamDescription.mChannelsPerFrame;
     streamDescription.mFramesPerPacket = 1;
     streamDescription.mReserved = 0;
-    
     return streamDescription;
 }
 
 
+-(AudioStreamBasicDescription) get32floatStreamFormat {
+    AudioStreamBasicDescription streamDescription;
+    UInt32 bytesPerSample = sizeof (AudioUnitSampleType);
+    streamDescription.mFormatID          = kAudioFormatLinearPCM;
+    streamDescription.mFormatFlags       = kAudioFormatFlagsNativeFloatPacked | kAudioFormatFlagIsNonInterleaved;
+    streamDescription.mBytesPerPacket    = bytesPerSample;
+    streamDescription.mFramesPerPacket   = 1;
+    streamDescription.mBytesPerFrame     = bytesPerSample;
+    streamDescription.mChannelsPerFrame  = 1;
+    streamDescription.mBitsPerChannel    = 8 * bytesPerSample;
+    streamDescription.mSampleRate        = _sampleRate;
+    return streamDescription;
+}
+ 
 - (void)destroyAudioUnitGraph {
     if (_progressGraph) {
         AUGraphStop(_progressGraph);

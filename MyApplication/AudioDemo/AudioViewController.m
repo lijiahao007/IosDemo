@@ -90,7 +90,14 @@
 }
 
 - (void)getRecordData:(nullable SInt8 *)buffer byteSize:(int)byteSize { 
-    NSLog(@"getRecordData byteSize:%d", byteSize);
+    
+    NSMutableString* str = [NSMutableString new];
+    for (int i = 0; i < byteSize && i < 10; i++) {
+        [str appendFormat:@"%d ", buffer[i]];
+    }
+    
+    NSLog(@"getRecordData byteSize:%d  %@", byteSize, str);
+    
 }
 
 - (void)requestAudioFrame:(nonnull SInt16 *)buffer numFrames:(int)numFrames {
@@ -98,7 +105,10 @@
     long distance = now - self.prevTime;
     self.prevTime = now;
     NSLog(@"requestAudioFrame numFrames:%d dis:[%ld]", numFrames, distance);
-    memset(buffer, 100, sizeof(SInt16) * numFrames);
+    
+    for (int i = 0; i < numFrames; i++) {
+        buffer[i] = arc4random() % INT16_MAX;
+    }
 }
 
 -(long) getNowMillis {
