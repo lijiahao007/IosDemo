@@ -101,6 +101,7 @@
 		84AF027F2BB5669A004CE44A /* AudioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AF027D2BB5669A004CE44A /* AudioViewController.m */; };
 		84AF02802BB5669A004CE44A /* AudioViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AF027E2BB5669A004CE44A /* AudioViewController.xib */; };
 		84AF02832BB56C55004CE44A /* PermissionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AF02822BB56C55004CE44A /* PermissionManager.m */; };
+		84AF02902BBAC525004CE44A /* pcm_raw_data.raw in Resources */ = {isa = PBXBuildFile; fileRef = 84AF028F2BBAC525004CE44A /* pcm_raw_data.raw */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -274,6 +275,7 @@
 		84AF027E2BB5669A004CE44A /* AudioViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AudioViewController.xib; sourceTree = "<group>"; };
 		84AF02812BB56C55004CE44A /* PermissionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PermissionManager.h; sourceTree = "<group>"; };
 		84AF02822BB56C55004CE44A /* PermissionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PermissionManager.m; sourceTree = "<group>"; };
+		84AF028F2BBAC525004CE44A /* pcm_raw_data.raw */ = {isa = PBXFileReference; lastKnownFileType = file; path = pcm_raw_data.raw; sourceTree = "<group>"; };
 		E096DE66C3698E2F71727597 /* Pods-MyApplication.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyApplication.release.xcconfig"; path = "Target Support Files/Pods-MyApplication/Pods-MyApplication.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -514,6 +516,7 @@
 		54688C9F2ABCC23C007F48E8 /* MyApplication */ = {
 			isa = PBXGroup;
 			children = (
+				84AF02912BBAC556004CE44A /* Resources */,
 				84AF02782BB56622004CE44A /* AudioDemo */,
 				84425C4F2BB2724500EFCDE7 /* MemoryDemo */,
 				54374ADA2B62B59600A16BE3 /* SegmentViewDemo */,
@@ -604,6 +607,14 @@
 				84AF027E2BB5669A004CE44A /* AudioViewController.xib */,
 			);
 			path = AudioDemo;
+			sourceTree = "<group>";
+		};
+		84AF02912BBAC556004CE44A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				84AF028F2BBAC525004CE44A /* pcm_raw_data.raw */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		C7B8292176E27066346E3E52 /* Frameworks */ = {
@@ -733,6 +744,7 @@
 				5458573F2B4AF6FD001E95A8 /* StackViewDemoViewController.xib in Resources */,
 				54688CB02ABCC23D007F48E8 /* LaunchScreen.storyboard in Resources */,
 				54374ADF2B62B5C700A16BE3 /* SegmentViewController.xib in Resources */,
+				84AF02902BBAC525004CE44A /* pcm_raw_data.raw in Resources */,
 				54688CAD2ABCC23D007F48E8 /* Assets.xcassets in Resources */,
 				54D9D1F72AF77FE300962B18 /* DemoView1.xib in Resources */,
 				84AF02802BB5669A004CE44A /* AudioViewController.xib in Resources */,

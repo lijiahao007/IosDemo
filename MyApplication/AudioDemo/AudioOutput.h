@@ -31,9 +31,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)play;
 - (void)stop;
 
-- (BOOL)enableRecord;
-- (BOOL)enablePlay;
-
 - (BOOL)isRunning;
 
 @end

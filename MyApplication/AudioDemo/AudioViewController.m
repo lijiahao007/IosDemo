@@ -16,9 +16,23 @@
 @property (weak, nonatomic) IBOutlet UISwitch *playSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *recordSwitch;
 @property (nonatomic, assign) long prevTime;
+@property (nonatomic, assign) float rate;
+
+@property (nonatomic, strong) NSData* pcmRawData;
+@property (nonatomic, assign) NSUInteger offset;
+
 @end
 
 @implementation AudioViewController
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _rate = 1.0f;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -32,19 +46,26 @@
     float bufferDuration = 0.064;
     [self SetAudioSessionWithTime:bufferDuration];
 
-    _rateLabel.text = [NSString stringWithFormat:@"%.2f", 1.0];
     _playSwitch.on = YES;
     _recordSwitch.on = YES;
     [_playSwitch addTarget:self action:@selector(switchStateChange:) forControlEvents:UIControlEventValueChanged];
     [_recordSwitch addTarget:self action:@selector(switchStateChange:) forControlEvents:UIControlEventValueChanged];
     
     if (_audioOutput == nil) {
-        _audioOutput = [[AudioOutput alloc]initWithSampleRate:16000 enableRecord:NO enablePlay:NO rate:1.0];
+        _audioOutput = [[AudioOutput alloc]initWithSampleRate:16000 enableRecord:NO enablePlay:NO rate:_rate];
         _audioOutput.delegate = self;
     }
     self.rateLabel.text = [NSString stringWithFormat:@"%.2f", self.audioOutput.rate];
     self.playSwitch.on = self.audioOutput.enablePlay;
     self.recordSwitch.on = self.audioOutput.enableRecord;
+    
+    [self loadPcmData];
+}
+
+-(void) loadPcmData {
+    NSURL* url = [[NSBundle mainBundle]URLForResource:@"pcm_raw_data" withExtension:@"raw"];
+    _pcmRawData = [NSData dataWithContentsOfURL:url];
+    NSLog(@"loadPcmData:%lu", _pcmRawData.length);
 }
 
 - (IBAction)startPlay:(id)sender {
@@ -56,9 +77,7 @@
             return;
         }
         
-       
-
-        strongSelf.rateLabel.text = [NSString stringWithFormat:@"%f", strongSelf.audioOutput.rate];
+        strongSelf.audioOutput.rate = strongSelf.rate;
         [strongSelf.audioOutput play];
     }];
   
@@ -70,21 +89,28 @@
     }
 }
 - (IBAction)clickPlus:(id)sender {
+    float rate = _rate + 0.1;
+    rate = MIN(32.0, rate);
+    _rate = rate;
+    
     if (_audioOutput) {
-        float rate = _audioOutput.rate + 0.1;
-        rate = MIN(32.0, rate);
-        _audioOutput.rate = rate;
-        _rateLabel.text = [NSString stringWithFormat:@"%.2f", _audioOutput.rate];
+        _audioOutput.rate = _rate;
     }
+    
+    _rateLabel.text = [NSString stringWithFormat:@"%.2f", _rate];
+
 }
 
 - (IBAction)clickMinus:(id)sender {
+    float rate = _rate - 0.1;
+    rate = MAX(1/32.0, rate);
+    _rate = rate;
+    
     if (_audioOutput) {
-        float rate = _audioOutput.rate - 0.1;
-        rate = MAX(1.0/32, rate);
-        _audioOutput.rate = rate;
-        _rateLabel.text = [NSString stringWithFormat:@"%.2f", _audioOutput.rate];
+        _audioOutput.rate = _rate;
     }
+    
+    _rateLabel.text = [NSString stringWithFormat:@"%.2f", _rate];
 }
 
 - (void)getRecordData:(nullable SInt8 *)buffer byteSize:(int)byteSize { 
@@ -104,8 +130,17 @@
     self.prevTime = now;
     NSLog(@"requestAudioFrame numFrames:%d dis:[%ld]", numFrames, distance);
     
-    for (int i = 0; i < numFrames; i++) {
-        buffer[i] = INT16_MAX / 2;
+    int needBytes = sizeof(SInt16) * numFrames;
+    NSUInteger rawDataLength = _pcmRawData.length;
+    if (needBytes + _offset < rawDataLength) {
+        [_pcmRawData getBytes:buffer range:NSMakeRange(_offset, needBytes)];
+        _offset += needBytes;
+    } else {
+        NSUInteger firstPartLength = rawDataLength - _offset;
+        [_pcmRawData getBytes:buffer range:NSMakeRange(_offset, firstPartLength)];
+        NSUInteger secondPartLength = needBytes - firstPartLength;
+        [_pcmRawData getBytes:buffer + firstPartLength range:NSMakeRange(0, secondPartLength)];
+        _offset = secondPartLength;
     }
 }
 
@@ -131,7 +166,6 @@
         self.audioOutput.enableRecord = sw.on;
     }
     
-    _rateLabel.text = [NSString stringWithFormat:@"%.2f", _audioOutput.rate];
 }
 
 
