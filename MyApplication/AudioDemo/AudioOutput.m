@@ -24,6 +24,11 @@
  * 6:AudioOutputUnitStart
  *
  * AudioOutput 一次只能创建一次
+ 
+ 改变graph流程 ：stop graph（must）-> edit graph(remove/add/connect/disconnect node..., update to be changed) -> graph update（graph changed）->start graph(optional)
+ 改变property： stop graph（must）-> change property ->start graph(optional)
+ 改变pramater：change pramater
+ 
  *
  **/
 
@@ -56,14 +61,16 @@ static OSStatus RecordCallback(void *inRefCon,
 @interface AudioOutput()
 @property (nonatomic, assign) AUGraph progressGraph;
 @property (nonatomic, assign) AUNode ioNode;
+@property (nonatomic, assign) AUNode C32f_16iConvertNode;
 @property (nonatomic, assign) AUNode timePitchNode;
-@property (nonatomic, assign) AUNode mixNode;
+@property (nonatomic, assign) AUNode C16i_32fConvertNode;
+
 @property (nonatomic, assign) AudioUnit ioUnit;
+@property (nonatomic, assign) AudioUnit C32f_16iConvertUnit;
 @property (nonatomic, assign) AudioUnit timePitchUnit;
-@property (nonatomic, assign) AudioUnit mixUnit;
+@property (nonatomic, assign) AudioUnit C16i_32fConvertUnit;
+
 @property (nonatomic, assign) SInt16* outBuffer;
-@property (nonatomic, assign) BOOL enableRecord; // 是否启动录音
-@property (nonatomic, assign) BOOL enablePlay; // 是否启动播放
 @property (nonatomic, assign) int sampleRate;
 @property (nonatomic, assign) BOOL isRunning;
 @property (nonatomic, assign) BOOL isInitGraph; // 是否初始化的Graph
@@ -87,8 +94,15 @@ static OSStatus RecordCallback(void *inRefCon,
         if (_enablePlay || _enableRecord) {
             [self createAudioUnitGraph];
         }
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeRate:) name:@"changeRate" object:nil];
     }
     return self;
+}
+
+-(void) changeRate:(NSNotification*)nofity {
+    float rate = [nofity.userInfo[@"rate"] floatValue];
+    self.rate = rate;
 }
 
 - (void)dealloc {
@@ -99,6 +113,8 @@ static OSStatus RecordCallback(void *inRefCon,
     
     [self destroyAudioUnitGraph];
     NSLog(@"AudioOutput dealloc %@", self);
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"changeRate" object:nil];
 }
 
 - (void)setRate:(Float32)rate {
@@ -106,6 +122,15 @@ static OSStatus RecordCallback(void *inRefCon,
     _rate = rate;
     
     [self setTimePitchRate];
+}
+
+
+- (void)setEnablePlay:(BOOL)enablePlay {
+    _enablePlay = enablePlay;
+}
+
+- (void)setEnableRecord:(BOOL)enableRecord {
+    _enableRecord = enableRecord;
 }
 
 -(void) setTimePitchRate {
@@ -133,7 +158,7 @@ static OSStatus RecordCallback(void *inRefCon,
     
     [self getUnitFromNode];
     [self setUnitScopeEnable];
-//    [self setTimePitchRate];
+    [self setTimePitchRate];
     [self setAudioUnitProperties];
     
     [self makeNodeConnections];
@@ -159,24 +184,33 @@ static OSStatus RecordCallback(void *inRefCon,
     status = AUGraphAddNode(_progressGraph, &ioDescription, &_ioNode);
     CheckStatus(status, @"Could not add I/O node to AUGraph", YES);
 
+    AudioComponentDescription timePitchDescription;
+    timePitchDescription.componentType = kAudioUnitType_FormatConverter;
+    timePitchDescription.componentSubType = kAudioUnitSubType_NewTimePitch;
+    timePitchDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
+    timePitchDescription.componentFlags = 0;
+    timePitchDescription.componentFlagsMask = 0;
+    status = AUGraphAddNode(_progressGraph, &timePitchDescription, &_timePitchNode);
+    CheckStatus(status, @"Could not add TimePitch node to AUGraph", YES);
     
-//    AudioComponentDescription timePitchDescription;
-//    timePitchDescription.componentType = kAudioUnitType_FormatConverter;
-//    timePitchDescription.componentSubType = kAudioUnitSubType_NewTimePitch;
-//    timePitchDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
-//    timePitchDescription.componentFlags = 0;
-//    timePitchDescription.componentFlagsMask = 0;
-//    status = AUGraphAddNode(_progressGraph, &timePitchDescription, &_timePitchNode);
-//    CheckStatus(status, @"Could not add TimePitch node to AUGraph", YES);
     
-    AudioComponentDescription mixDescription;
-    mixDescription.componentType = kAudioUnitType_Mixer;
-    mixDescription.componentSubType = kAudioUnitSubType_MultiChannelMixer;
-    mixDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
-    mixDescription.componentFlags = 0;
-    mixDescription.componentFlagsMask = 0;
-    status = AUGraphAddNode(_progressGraph, &mixDescription, &_mixNode);
-    CheckStatus(status, @"Could not add Mix node to AUGraph", YES);
+    AudioComponentDescription c16i_32fDes;
+    c16i_32fDes.componentType = kAudioUnitType_FormatConverter;
+    c16i_32fDes.componentSubType = kAudioUnitSubType_AUConverter;
+    c16i_32fDes.componentManufacturer = kAudioUnitManufacturer_Apple;
+    c16i_32fDes.componentFlags = 0;
+    c16i_32fDes.componentFlagsMask = 0;
+    status = AUGraphAddNode(_progressGraph, &c16i_32fDes, &_C16i_32fConvertNode);
+    CheckStatus(status, @"Could not add _C16i_32fConvertNode to AUGraph", YES);
+    
+    AudioComponentDescription c32f_16iDes;
+    c32f_16iDes.componentType = kAudioUnitType_FormatConverter;
+    c32f_16iDes.componentSubType = kAudioUnitSubType_AUConverter;
+    c32f_16iDes.componentManufacturer = kAudioUnitManufacturer_Apple;
+    c32f_16iDes.componentFlags = 0;
+    c32f_16iDes.componentFlagsMask = 0;
+    status = AUGraphAddNode(_progressGraph, &c32f_16iDes, &_C32f_16iConvertNode);
+    CheckStatus(status, @"Could not add _C32f_16iConvertNode to AUGraph", YES);
     
 }
 
@@ -187,11 +221,15 @@ static OSStatus RecordCallback(void *inRefCon,
     status = AUGraphNodeInfo(_progressGraph, _ioNode, NULL, &_ioUnit);
     CheckStatus(status, @"Could not retrieve node info for I/O node", YES);
     
-//    status = AUGraphNodeInfo(_progressGraph, _timePitchNode, NULL, &_timePitchUnit);
-//    CheckStatus(status, @"Could not retrieve node info for TimePitch node", YES);
-//    
-    status = AUGraphNodeInfo(_progressGraph, _mixNode, NULL, &_mixUnit);
-    CheckStatus(status, @"Could not retrieve node info for Mix node", YES);
+    status = AUGraphNodeInfo(_progressGraph, _timePitchNode, NULL, &_timePitchUnit);
+    CheckStatus(status, @"Could not retrieve node info for TimePitch node", YES);
+    
+    status = AUGraphNodeInfo(_progressGraph, _C16i_32fConvertNode, NULL, &_C16i_32fConvertUnit);
+    CheckStatus(status, @"Could not retrieve node info for _C16i_32fConvertNode node", YES);
+    
+    status = AUGraphNodeInfo(_progressGraph, _C32f_16iConvertNode, NULL, &_C32f_16iConvertUnit);
+    CheckStatus(status, @"Could not retrieve node info for _C32f_16iConvertNode node", YES);
+    
 }
 
 /**
@@ -219,6 +257,7 @@ static OSStatus RecordCallback(void *inRefCon,
     
     AudioStreamBasicDescription description16i = [self get16intStreamFormat];
     AudioStreamBasicDescription description32f = [self get32floatStreamFormat];
+    AudioStreamBasicDescription description32i = [self get32intStreamFormat];
     
     // 输入端输出格式
     status = AudioUnitSetProperty(_ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, inputElement, &description16i, sizeof(description16i));
@@ -226,26 +265,48 @@ static OSStatus RecordCallback(void *inRefCon,
     status = AudioUnitSetProperty(_ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, outputElement, &description16i, sizeof(description16i));
     CheckStatus(status, @"Could not set stream format on I/O unit outputElement input Scope", YES);
     
-//    status = AudioUnitSetProperty(_timePitchUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, outputElement, &description32f, sizeof(description32f));
-//    CheckStatus(status, @"Could not set stream format on _timePitchUnit outputElement output Scope", YES);
+    status = AudioUnitSetProperty(_timePitchUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, outputElement, &description32f, sizeof(description32f));
+    CheckStatus(status, @"Could not set stream format on _timePitchUnit outputElement output Scope", YES);
+    
+    status = AudioUnitSetProperty(_timePitchUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, outputElement, &description32f, sizeof(description32f));
+    CheckStatus(status, @"Could not set stream format on _timePitchUnit outputElement input Scope", YES);
     
     
-    status = AudioUnitSetProperty(_ioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, outputElement, &description16i, sizeof(description16i));
-    CheckStatus(status, @"Could not set stream format on I/O unit outputElement input Scope", YES);
+    status = AudioUnitSetProperty(_C16i_32fConvertUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, outputElement, &description16i, sizeof(description16i));
+    CheckStatus(status, @"Could not set stream format on _C16i_32fConvertUnit outputElement input Scope", YES);
     
+    status = AudioUnitSetProperty(_C16i_32fConvertUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, outputElement, &description32f, sizeof(description32f));
+    CheckStatus(status, @"Could not set stream format on _C16i_32fConvertUnit outputElement output Scope", YES);
+    
+    
+    status = AudioUnitSetProperty(_C32f_16iConvertUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, outputElement, &description32f, sizeof(description32f));
+    CheckStatus(status, @"Could not set stream format on _C32f_16iConvertUnit outputElement intput Scope", YES);
+    
+    status = AudioUnitSetProperty(_C32f_16iConvertUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, outputElement, &description16i, sizeof(description16i));
+    CheckStatus(status, @"Could not set stream format on _C32f_16iConvertUnit outputElement output Scope", YES);
+}
+
+-(AudioStreamBasicDescription) checkStreamForamt:(AudioUnit) unit {
+    AudioStreamBasicDescription timepitchDefaultDescription;
+    UInt32 descriptionSize = sizeof(timepitchDefaultDescription);
+    AudioUnitGetProperty(unit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, outputElement, &timepitchDefaultDescription, &descriptionSize);
+    return timepitchDefaultDescription;
 }
 
 -(void) makeNodeConnections {
     OSStatus status = noErr;
+    status = AUGraphConnectNodeInput(_progressGraph, _C16i_32fConvertNode, 0, _timePitchNode, 0);
+    CheckStatus(status, @"Could not connect _C16i_32fConvertNode node input to _timePitchNode node input", YES);
+    status = AUGraphConnectNodeInput(_progressGraph, _timePitchNode, 0, _C32f_16iConvertNode, 0);
+    CheckStatus(status, @"Could not connect _timePitchNode node input to _C32f_16iConvertNode node input", YES);
+    status = AUGraphConnectNodeInput(_progressGraph, _C32f_16iConvertNode, 0, _ioNode, 0);
+    CheckStatus(status, @"Could not connect _C32f_16iConvertNode node input to _ioNode node input", YES);
     
-    // 将 （timePitchNode的element0的outputScope） 与 （ioNode的element0的inputScope） 连接在一起。
-//    status = AUGraphConnectNodeInput(_progressGraph, _timePitchNode, 0, _ioNode, 0);
-//    CheckStatus(status, @"Could not connect I/O node input to timePitch node input", YES);
     
     AURenderCallbackStruct callbackStruct;
     callbackStruct.inputProc = &InputRenderCallback;
     callbackStruct.inputProcRefCon = (__bridge void *)self;
-    status = AudioUnitSetProperty(_ioUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, outputElement, &callbackStruct, sizeof(callbackStruct));
+    status = AudioUnitSetProperty(_C16i_32fConvertUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, outputElement, &callbackStruct, sizeof(callbackStruct));
     CheckStatus(status, @"Could not set render callback on timePitch input scope, element 0", YES);
 
     AURenderCallbackStruct recordCallbackStruct;
@@ -270,18 +331,34 @@ static OSStatus RecordCallback(void *inRefCon,
     return streamDescription;
 }
 
+-(AudioStreamBasicDescription) get32intStreamFormat {
+    AudioStreamBasicDescription streamDescription;
+    streamDescription.mSampleRate = _sampleRate;
+    streamDescription.mFormatID = kAudioFormatLinearPCM;
+    streamDescription.mFormatFlags = kAudioFormatFlagsAudioUnitCanonical | kAudioFormatFlagIsNonInterleaved;
+    streamDescription.mBitsPerChannel = 32;
+    streamDescription.mBytesPerFrame = 4;
+    streamDescription.mChannelsPerFrame = 1;
+    streamDescription.mBytesPerPacket = 32;
+    streamDescription.mFramesPerPacket = 1;
+    streamDescription.mReserved = 0;
+    return streamDescription;
+}
+
+
 
 -(AudioStreamBasicDescription) get32floatStreamFormat {
     AudioStreamBasicDescription streamDescription;
     UInt32 bytesPerSample = sizeof (AudioUnitSampleType);
+    streamDescription.mSampleRate        = _sampleRate;
     streamDescription.mFormatID          = kAudioFormatLinearPCM;
     streamDescription.mFormatFlags       = kAudioFormatFlagsNativeFloatPacked | kAudioFormatFlagIsNonInterleaved;
-    streamDescription.mBytesPerPacket    = bytesPerSample;
-    streamDescription.mFramesPerPacket   = 1;
+    streamDescription.mBitsPerChannel    = 8 * bytesPerSample;
     streamDescription.mBytesPerFrame     = bytesPerSample;
     streamDescription.mChannelsPerFrame  = 1;
-    streamDescription.mBitsPerChannel    = 8 * bytesPerSample;
-    streamDescription.mSampleRate        = _sampleRate;
+    streamDescription.mBytesPerPacket    = bytesPerSample;
+    streamDescription.mFramesPerPacket   = 1;
+    streamDescription.mReserved = 0;
     return streamDescription;
 }
  
@@ -291,12 +368,21 @@ static OSStatus RecordCallback(void *inRefCon,
         AUGraphUninitialize(_progressGraph);
         AUGraphClose(_progressGraph);
         AUGraphRemoveNode(_progressGraph, _ioNode);
+        AUGraphRemoveNode(_progressGraph, _timePitchNode);
+        AUGraphRemoveNode(_progressGraph, _C16i_32fConvertNode);
+        AUGraphRemoveNode(_progressGraph, _C32f_16iConvertNode);
         DisposeAUGraph(_progressGraph);
     }
-    _ioUnit = NULL;
     _ioNode = 0;
     _timePitchNode = 0;
+    _C16i_32fConvertNode = 0;
+    _C32f_16iConvertNode = 0;
+    
+    _ioUnit = NULL;
     _timePitchUnit = NULL;
+    _C16i_32fConvertUnit = NULL;
+    _C32f_16iConvertUnit = NULL;
+    
     _progressGraph = NULL;
     _isRunning = NO;
     _isInitGraph = NO;
@@ -427,14 +513,6 @@ static OSStatus RecordCallback(void *inRefCon,
 
 - (BOOL)isRunning {
     return _isRunning;
-}
-
-- (BOOL)enableRecord {
-    return _enableRecord;
-}
-
-- (BOOL)enablePlay {
-    return _enablePlay;
 }
 
 

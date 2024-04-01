@@ -107,7 +107,7 @@
     NSLog(@"requestAudioFrame numFrames:%d dis:[%ld]", numFrames, distance);
     
     for (int i = 0; i < numFrames; i++) {
-        buffer[i] = arc4random() % INT16_MAX;
+        buffer[i] = INT16_MAX / 2;
     }
 }
 
