@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AudioViewController">
             <connections>
+                <outlet property="gainNumLabel" destination="x8X-6A-7Pv" id="7Xq-vo-xIx"/>
                 <outlet property="playSwitch" destination="GyP-2e-YuO" id="JGe-hI-752"/>
                 <outlet property="rateLabel" destination="MCn-cM-2h8" id="u5S-Ay-GYC"/>
                 <outlet property="recordSwitch" destination="kAi-is-Ese" id="Tc1-8U-Eif"/>
@@ -41,10 +42,16 @@
                     </connections>
                 </button>
                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wew-hp-wBZ" userLabel="RateSetStack">
-                    <rect key="frame" x="143" y="347" width="107.33333333333331" height="34.333333333333314"/>
+                    <rect key="frame" x="125.66666666666669" y="347" width="142" height="34.333333333333314"/>
                     <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="速率" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cUO-Gz-pj4">
+                            <rect key="frame" x="0.0" y="0.0" width="34.666666666666664" height="34.333333333333336"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LDI-wf-ulo">
-                            <rect key="frame" x="0.0" y="0.0" width="31.666666666666668" height="34.333333333333336"/>
+                            <rect key="frame" x="34.666666666666671" y="0.0" width="31.666666666666671" height="34.333333333333336"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="-"/>
                             <connections>
@@ -52,13 +59,13 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MCn-cM-2h8">
-                            <rect key="frame" x="31.666666666666661" y="0.0" width="41.333333333333343" height="34.333333333333336"/>
+                            <rect key="frame" x="66.333333333333329" y="0.0" width="41.333333333333329" height="34.333333333333336"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nZ3-wI-azi">
-                            <rect key="frame" x="73" y="0.0" width="34.333333333333343" height="34.333333333333336"/>
+                            <rect key="frame" x="107.66666666666667" y="0.0" width="34.333333333333329" height="34.333333333333336"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="+"/>
                             <connections>
@@ -95,13 +102,48 @@
                         </switch>
                     </subviews>
                 </stackView>
+                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W2u-Hq-E04" userLabel="GainStack">
+                    <rect key="frame" x="125.66666666666669" y="662" width="142" height="34.333333333333371"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="增益" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QjM-3d-nPc">
+                            <rect key="frame" x="0.0" y="0.0" width="34.666666666666664" height="34.333333333333336"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wxC-DM-0mD">
+                            <rect key="frame" x="34.666666666666671" y="0.0" width="31.666666666666671" height="34.333333333333336"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" title="-"/>
+                            <connections>
+                                <action selector="minusGain:" destination="-1" eventType="touchUpInside" id="a57-Wu-j4S"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x8X-6A-7Pv">
+                            <rect key="frame" x="66.333333333333329" y="0.0" width="41.333333333333329" height="34.333333333333336"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GZZ-UQ-511">
+                            <rect key="frame" x="107.66666666666667" y="0.0" width="34.333333333333329" height="34.333333333333336"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" title="+"/>
+                            <connections>
+                                <action selector="plusGain:" destination="-1" eventType="touchUpInside" id="rOk-dR-vSp"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="W2u-Hq-E04" firstAttribute="top" secondItem="b1v-gk-Llb" secondAttribute="bottom" constant="40" id="0il-EG-NPV"/>
                 <constraint firstItem="M7o-0b-zY9" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="3cW-Fm-xkg"/>
                 <constraint firstItem="kQ8-Aa-hli" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="58e-CA-Zfv"/>
                 <constraint firstItem="Wew-hp-wBZ" firstAttribute="bottom" secondItem="kQ8-Aa-hli" secondAttribute="top" constant="-40" id="DSf-ZW-K41"/>
+                <constraint firstItem="W2u-Hq-E04" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="QLu-yX-CD9"/>
                 <constraint firstItem="bCe-Ak-2Cl" firstAttribute="top" secondItem="M7o-0b-zY9" secondAttribute="bottom" constant="20" id="RPl-0q-HfO"/>
                 <constraint firstItem="bCe-Ak-2Cl" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="aTc-aC-FZu"/>
                 <constraint firstItem="b1v-gk-Llb" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="iU5-Wo-F7r"/>

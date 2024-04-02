@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UISwitch *recordSwitch;
 @property (nonatomic, assign) long prevTime;
 @property (nonatomic, assign) float rate;
+@property (weak, nonatomic) IBOutlet UILabel *gainNumLabel;
 
 @property (nonatomic, strong) NSData* pcmRawData;
 @property (nonatomic, assign) NSUInteger offset;
@@ -58,6 +59,7 @@
     self.rateLabel.text = [NSString stringWithFormat:@"%.2f", self.audioOutput.rate];
     self.playSwitch.on = self.audioOutput.enablePlay;
     self.recordSwitch.on = self.audioOutput.enableRecord;
+    self.gainNumLabel.text = [NSString stringWithFormat:@"%.2f", self.audioOutput.overallGain];
     
     [self loadPcmData];
 }
@@ -81,6 +83,20 @@
         [strongSelf.audioOutput play];
     }];
   
+}
+
+- (IBAction)plusGain:(id)sender {
+    if (self.audioOutput) {
+        self.audioOutput.overallGain++;
+        self.gainNumLabel.text = [NSString stringWithFormat:@"%.2f", self.audioOutput.overallGain];
+    }
+}
+
+- (IBAction)minusGain:(id)sender {
+    if (self.audioOutput) {
+        self.audioOutput.overallGain--;
+        self.gainNumLabel.text = [NSString stringWithFormat:@"%.2f", self.audioOutput.overallGain];
+    }
 }
 
 - (IBAction)stopPlay:(id)sender {
@@ -120,7 +136,7 @@
         [str appendFormat:@"%d ", buffer[i]];
     }
     
-    NSLog(@"getRecordData byteSize:%d  %@", byteSize, str);
+    NSLog(@"getRecordData byteSize:%d  %@  %@", byteSize, str, [NSThread currentThread]);
     
 }
 
@@ -128,7 +144,7 @@
     long now = [self getNowMillis];
     long distance = now - self.prevTime;
     self.prevTime = now;
-    NSLog(@"requestAudioFrame numFrames:%d dis:[%ld]", numFrames, distance);
+    NSLog(@"requestAudioFrame numFrames:%d dis:[%ld]  %@", numFrames, distance, [NSThread currentThread]);
     
     int needBytes = sizeof(SInt16) * numFrames;
     NSUInteger rawDataLength = _pcmRawData.length;
@@ -142,6 +158,12 @@
         [_pcmRawData getBytes:buffer + firstPartLength range:NSMakeRange(0, secondPartLength)];
         _offset = secondPartLength;
     }
+    
+    X_WeakSelf
+    dispatch_async(dispatch_get_main_queue(), ^{
+        X_StrongSelf
+        strongSelf.rateLabel.text = [NSString stringWithFormat:@"%.2f", strongSelf.audioOutput.rate];
+    });
 }
 
 -(long) getNowMillis {

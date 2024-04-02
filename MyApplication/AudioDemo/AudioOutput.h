@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) float rate; // 播放速率 [1/32,32.0]
 @property (nonatomic, assign) BOOL enableRecord; // 是否启动录音
 @property (nonatomic, assign) BOOL enablePlay; // 是否启动播放
+@property (nonatomic, assign) float overallGain; // 增益 [-40db, 40db]
 
 - (instancetype)initWithSampleRate:(int)sampleRate enableRecord:(BOOL)enableRecord enablePlay:(BOOL)enablePlay rate:(float)rate;
 
