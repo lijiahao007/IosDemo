@@ -15,6 +15,7 @@
 #import "StackViewWithScrollViewDemoViewController.h"
 #import "MemoryDemo/MemoryDemoViewController.h"
 #import "AudioDemo/AudioViewController.h"
+#import "xib自适应/XibDemoViewController.h"
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView* tableView;
@@ -40,6 +41,7 @@
         @{kItemName:@"SegmentViewDemo", kItemVc:[SegmentViewController class]},
         @{kItemName:@"MemoryDemo", kItemVc:[MemoryDemoViewController class]},
         @{kItemName:@"AudioDemo", kItemVc:[AudioViewController class]},
+        @{kItemName:@"XibDemo", kItemVc:[XibDemoViewController class]}
     ];
 
     

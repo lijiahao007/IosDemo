@@ -86,6 +86,8 @@
 		54D187EB2B8AE60A00F7C1D2 /* UIView1.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D187EA2B8AE60A00F7C1D2 /* UIView1.m */; };
 		54D187EE2B8AE6AC00F7C1D2 /* UIView2.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D187ED2B8AE6AC00F7C1D2 /* UIView2.m */; };
 		54D9D1F72AF77FE300962B18 /* DemoView1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54D9D1F62AF77FE300962B18 /* DemoView1.xib */; };
+		54DB8FAE2BF9B8D3005A8561 /* XibDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DB8FAC2BF9B8D3005A8561 /* XibDemoViewController.m */; };
+		54DB8FAF2BF9B8D3005A8561 /* XibDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54DB8FAD2BF9B8D3005A8561 /* XibDemoViewController.xib */; };
 		54FB17372B8B2208000DE3D7 /* UIView3.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB17362B8B2208000DE3D7 /* UIView3.m */; };
 		54FB173A2B8B2660000DE3D7 /* UILabel1.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB17392B8B2660000DE3D7 /* UILabel1.m */; };
 		54FB173D2B8B2735000DE3D7 /* UILabel2.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB173C2B8B2735000DE3D7 /* UILabel2.m */; };
@@ -243,6 +245,9 @@
 		54D187EC2B8AE6AC00F7C1D2 /* UIView2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIView2.h; sourceTree = "<group>"; };
 		54D187ED2B8AE6AC00F7C1D2 /* UIView2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIView2.m; sourceTree = "<group>"; };
 		54D9D1F62AF77FE300962B18 /* DemoView1.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DemoView1.xib; sourceTree = "<group>"; };
+		54DB8FAB2BF9B8D3005A8561 /* XibDemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XibDemoViewController.h; sourceTree = "<group>"; };
+		54DB8FAC2BF9B8D3005A8561 /* XibDemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XibDemoViewController.m; sourceTree = "<group>"; };
+		54DB8FAD2BF9B8D3005A8561 /* XibDemoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = XibDemoViewController.xib; sourceTree = "<group>"; };
 		54FB17352B8B2208000DE3D7 /* UIView3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIView3.h; sourceTree = "<group>"; };
 		54FB17362B8B2208000DE3D7 /* UIView3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIView3.m; sourceTree = "<group>"; };
 		54FB17382B8B2660000DE3D7 /* UILabel1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UILabel1.h; sourceTree = "<group>"; };
@@ -516,6 +521,7 @@
 		54688C9F2ABCC23C007F48E8 /* MyApplication */ = {
 			isa = PBXGroup;
 			children = (
+				54DB8FAA2BF9B8BD005A8561 /* xib自适应 */,
 				84AF02912BBAC556004CE44A /* Resources */,
 				84AF02782BB56622004CE44A /* AudioDemo */,
 				84425C4F2BB2724500EFCDE7 /* MemoryDemo */,
@@ -567,6 +573,16 @@
 				54CB9B9D2B39CF4700AF9827 /* AudioManager.m */,
 			);
 			path = AudioChat;
+			sourceTree = "<group>";
+		};
+		54DB8FAA2BF9B8BD005A8561 /* xib自适应 */ = {
+			isa = PBXGroup;
+			children = (
+				54DB8FAB2BF9B8D3005A8561 /* XibDemoViewController.h */,
+				54DB8FAC2BF9B8D3005A8561 /* XibDemoViewController.m */,
+				54DB8FAD2BF9B8D3005A8561 /* XibDemoViewController.xib */,
+			);
+			path = "xib自适应";
 			sourceTree = "<group>";
 		};
 		84425C4F2BB2724500EFCDE7 /* MemoryDemo */ = {
@@ -748,6 +764,7 @@
 				54688CAD2ABCC23D007F48E8 /* Assets.xcassets in Resources */,
 				54D9D1F72AF77FE300962B18 /* DemoView1.xib in Resources */,
 				84AF02802BB5669A004CE44A /* AudioViewController.xib in Resources */,
+				54DB8FAF2BF9B8D3005A8561 /* XibDemoViewController.xib in Resources */,
 				54CB9B9B2B39BAA900AF9827 /* AudioChatViewController.xib in Resources */,
 				84425C542BB2725E00EFCDE7 /* MemoryDemoViewController.xib in Resources */,
 			);
@@ -841,6 +858,7 @@
 				54134C562ADEEF24007FBE7C /* compare_win.cc in Sources */,
 				54134C532ADEEF24007FBE7C /* row_mmi.cc in Sources */,
 				54134C5E2ADEEF24007FBE7C /* compare.cc in Sources */,
+				54DB8FAE2BF9B8D3005A8561 /* XibDemoViewController.m in Sources */,
 				54134C522ADEEF24007FBE7C /* rotate.cc in Sources */,
 				54CB9B9E2B39CF4700AF9827 /* AudioManager.m in Sources */,
 				54134C752ADEEF24007FBE7C /* mjpeg_validate.cc in Sources */,
