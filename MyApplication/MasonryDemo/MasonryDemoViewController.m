@@ -14,6 +14,8 @@
 
 @interface MasonryDemoViewController ()
 
+@property (nonatomic, strong) UIButton* button;
+
 @end
 
 @implementation MasonryDemoViewController
@@ -22,7 +24,10 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [self createView];
+//    [self createView];
+//    [self createButton];
+    [self createScrollView];
+    
 }
 
 -(void) createView {
@@ -76,6 +81,21 @@
         make.bottom.mas_equalTo(contentView).priority(249);
 
     }];
+}
+
+-(void) createButton {
+    UIImage* image = [UIImage imageNamed:@"control_icon_clock_endtime"];
+    _button = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, CGImageGetWidth(image.CGImage), CGImageGetHeight(image.CGImage))];
+//    [_button setTitle:@"Helloworld" forState:UIControlStateNormal];
+    [_button setImage:image forState:UIControlStateNormal];
+    [self.view addSubview:_button];
+}
+
+-(void) createScrollView {
+    UIView* view = [[NSBundle mainBundle]loadNibNamed:@"DemoView1" owner:nil options:nil].firstObject;
+    view.frame = self.view.bounds;
+
+    [self.view addSubview:view];
 }
 
 
