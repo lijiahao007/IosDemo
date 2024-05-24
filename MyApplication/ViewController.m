@@ -15,8 +15,12 @@
 #import "StackViewWithScrollViewDemoViewController.h"
 #import "MemoryDemo/MemoryDemoViewController.h"
 #import "AudioDemo/AudioViewController.h"
+<<<<<<< HEAD
 #import "TimerDemo/TimerDemoViewController.h"
 #import "SelectViewDemo/SelectViewController.h"
+=======
+#import "xib自适应/XibDemoViewController.h"
+>>>>>>> b845f3ab5daf0f9a66b981f0b6676f4a9f6970d4
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView* tableView;
@@ -42,8 +46,12 @@
         @{kItemName:@"SegmentViewDemo", kItemVc:[SegmentViewController class]},
         @{kItemName:@"MemoryDemo", kItemVc:[MemoryDemoViewController class]},
         @{kItemName:@"AudioDemo", kItemVc:[AudioViewController class]},
+<<<<<<< HEAD
         @{kItemName:@"TimerDemo", kItemVc:[TimerDemoViewController class]},
         @{kItemName:@"SelectDemo", kItemVc:[SelectViewController class]},
+=======
+        @{kItemName:@"XibDemo", kItemVc:[XibDemoViewController class]}
+>>>>>>> b845f3ab5daf0f9a66b981f0b6676f4a9f6970d4
     ];
 
     
