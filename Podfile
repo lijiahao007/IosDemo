@@ -17,6 +17,7 @@ end
 
 target 'MyApplication' do
 	use_frameworks!
+#  pod 'NVSDK'          , :path=>'LocalPods/NVSDK/NVSDK.podspec'
 	pod 'AFNetworking', '~> 4.0'
 	pod 'Masonry', '~> 1.1.0'
 	pod 'FLAnimatedImage', '~> 1.0'
