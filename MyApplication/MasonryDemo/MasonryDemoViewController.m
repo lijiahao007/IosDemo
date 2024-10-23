@@ -27,7 +27,6 @@
 //    [self createView];
 //    [self createButton];
     [self createScrollView];
-    
 }
 
 -(void) createView {

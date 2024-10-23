@@ -100,6 +100,8 @@
 		84425C542BB2725E00EFCDE7 /* MemoryDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84425C522BB2725E00EFCDE7 /* MemoryDemoViewController.xib */; };
 		84425C572BB272B800EFCDE7 /* MemoryDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84425C562BB272B800EFCDE7 /* MemoryDemo.m */; };
 		84425C5B2BB2788000EFCDE7 /* FIFORingQueueManager.c in Sources */ = {isa = PBXBuildFile; fileRef = 84425C5A2BB2788000EFCDE7 /* FIFORingQueueManager.c */; };
+		844794A02CC8992C00B514D4 /* TimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8447949F2CC8992C00B514D4 /* TimelineView.m */; };
+		844794A32CC8999000B514D4 /* TimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 844794A22CC8999000B514D4 /* TimelineViewController.m */; };
 		84AF027B2BB5664C004CE44A /* AudioOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AF02792BB5664C004CE44A /* AudioOutput.m */; };
 		84AF027F2BB5669A004CE44A /* AudioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AF027D2BB5669A004CE44A /* AudioViewController.m */; };
 		84AF02802BB5669A004CE44A /* AudioViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AF027E2BB5669A004CE44A /* AudioViewController.xib */; };
@@ -280,6 +282,10 @@
 		84425C602BB2792F00EFCDE7 /* Defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Defines.h; sourceTree = "<group>"; };
 		84425C612BB2792F00EFCDE7 /* DefineVars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefineVars.h; sourceTree = "<group>"; };
 		84425C622BB2796900EFCDE7 /* HSFrameData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSFrameData.h; sourceTree = "<group>"; };
+		8447949E2CC8992C00B514D4 /* TimelineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimelineView.h; sourceTree = "<group>"; };
+		8447949F2CC8992C00B514D4 /* TimelineView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimelineView.m; sourceTree = "<group>"; };
+		844794A12CC8999000B514D4 /* TimelineViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimelineViewController.h; sourceTree = "<group>"; };
+		844794A22CC8999000B514D4 /* TimelineViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimelineViewController.m; sourceTree = "<group>"; };
 		84AF02792BB5664C004CE44A /* AudioOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioOutput.m; sourceTree = "<group>"; };
 		84AF027A2BB5664C004CE44A /* AudioOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioOutput.h; sourceTree = "<group>"; };
 		84AF027C2BB5669A004CE44A /* AudioViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioViewController.h; sourceTree = "<group>"; };
@@ -535,6 +541,7 @@
 		54688C9F2ABCC23C007F48E8 /* MyApplication */ = {
 			isa = PBXGroup;
 			children = (
+				8447949D2CC8991000B514D4 /* TimeLineRulerDemo */,
 				84E9F3232C2915DD00E48F52 /* SelectViewDemo */,
 				84E9F3282C2915DD00E48F52 /* TimerDemo */,
 				840A5BDD2C1FD52B00C5A1D4 /* SDKImportDemo */,
@@ -635,6 +642,17 @@
 				84425C592BB2788000EFCDE7 /* FIFORingQueueManager.h */,
 			);
 			path = QueueDemo;
+			sourceTree = "<group>";
+		};
+		8447949D2CC8991000B514D4 /* TimeLineRulerDemo */ = {
+			isa = PBXGroup;
+			children = (
+				8447949E2CC8992C00B514D4 /* TimelineView.h */,
+				8447949F2CC8992C00B514D4 /* TimelineView.m */,
+				844794A12CC8999000B514D4 /* TimelineViewController.h */,
+				844794A22CC8999000B514D4 /* TimelineViewController.m */,
+			);
+			path = TimeLineRulerDemo;
 			sourceTree = "<group>";
 		};
 		84AF02782BB56622004CE44A /* AudioDemo */ = {
@@ -924,6 +942,7 @@
 				54134C612ADEEF24007FBE7C /* compare_msa.cc in Sources */,
 				54FB173D2B8B2735000DE3D7 /* UILabel2.m in Sources */,
 				54134C6F2ADEEF24007FBE7C /* convert_to_argb.cc in Sources */,
+				844794A32CC8999000B514D4 /* TimelineViewController.m in Sources */,
 				54134C782ADEEF24007FBE7C /* rotate_msa.cc in Sources */,
 				54134C602ADEEF24007FBE7C /* convert_from_argb.cc in Sources */,
 				54134C572ADEEF24007FBE7C /* cpu_id.cc in Sources */,
@@ -943,6 +962,7 @@
 				54134C502ADEEF24007FBE7C /* scale_rgb.cc in Sources */,
 				54134B302AD75ACE007FBE7C /* SceneDelegate.m in Sources */,
 				54134C812ADEEF24007FBE7C /* rotate_argb.cc in Sources */,
+				844794A02CC8992C00B514D4 /* TimelineView.m in Sources */,
 				54134C772ADEEF24007FBE7C /* compare_common.cc in Sources */,
 				54134C5D2ADEEF24007FBE7C /* scale.cc in Sources */,
 				840A5C472C1FD81200C5A1D4 /* SDKDemo.m in Sources */,

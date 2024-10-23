@@ -18,11 +18,14 @@
 #import "TimerDemo/TimerDemoViewController.h"
 #import "SelectViewDemo/SelectViewController.h"
 #import "xib自适应/XibDemoViewController.h"
+#import "TimelineViewController.h"
+
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView* tableView;
 @property (nonatomic, strong) NSArray<NSDictionary*>* tableArray;
 @end
+
 
 #define kItemName @"kItemName"
 #define kItemVc @"kItemVc"
@@ -45,7 +48,8 @@
         @{kItemName:@"AudioDemo", kItemVc:[AudioViewController class]},
         @{kItemName:@"TimerDemo", kItemVc:[TimerDemoViewController class]},
         @{kItemName:@"SelectDemo", kItemVc:[SelectViewController class]},
-        @{kItemName:@"XibDemo", kItemVc:[XibDemoViewController class]}
+        @{kItemName:@"XibDemo", kItemVc:[XibDemoViewController class]},
+        @{kItemName:@"TimeLineDemo", kItemVc:[TimelineViewController class]}
     ];
 
     
