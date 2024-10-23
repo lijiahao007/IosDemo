@@ -3,6 +3,7 @@
 //  MyApplication
 //
 //  Created by HS on 2024/10/23.
+//  Rewrite from https://github.com/qianquanQutman/TimeRuler
 //
 
 #import "TimeRulerLayer.h"
@@ -146,7 +147,7 @@
     // 上标记rect
     CGRect rect = CGRectMake(rectX, rectY, mark.size.width, mark.size.height);
     // 下标记rect
-    CGRect btmRect = CGRectMake(rectX, CGRectGetHeight(self.bounds), mark.size.width, mark.size.height);
+    CGRect btmRect = CGRectMake(rectX, CGRectGetHeight(self.bounds) - mark.size.height, mark.size.width, mark.size.height);
     CGContextSetFillColorWithColor(context, mark.color.CGColor);
     CGContextFillRect(context, rect);
     CGContextFillRect(context, btmRect);
