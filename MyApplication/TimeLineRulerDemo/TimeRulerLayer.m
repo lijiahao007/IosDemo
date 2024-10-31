@@ -24,7 +24,7 @@
 @property (nonatomic, strong) TimeRulerMark* minorMark;
 @property (nonatomic, strong) TimeRulerMark* middleMark;
 @property (nonatomic, strong) TimeRulerMark* majorMark;
-@property (nonatomic, strong) NSMutableArray<CAShapeLayer*>* rangeShapeArr;
+@property (nonatomic, strong) NSMutableArray<CALayer*>* rangeShapeArr;
 
 @end
 
@@ -79,10 +79,9 @@
     }
 
     for (TimeRulerInfo* info in _selectedRange) {
-        CAShapeLayer* shapeLayer = [[CAShapeLayer alloc]init];
+        CALayer* shapeLayer = [[CAShapeLayer alloc]init];
         
-        shapeLayer.fillColor = [info.color colorWithAlphaComponent:0.8].CGColor;
-        shapeLayer.anchorPoint = CGPointMake(0, 0);
+        shapeLayer.backgroundColor = [info.color colorWithAlphaComponent:0.8].CGColor;
         
         [self.rangeShapeArr addObject:shapeLayer];
         [self addSublayer:shapeLayer];
@@ -183,14 +182,9 @@
             CGFloat y = textSize.height + kTextMarkDistance + self.majorMark.size.height;
             CGFloat width = ((CGFloat)(endSecond - startSecond)) / (24 * 3600.0) * (CGRectGetWidth(self.bounds) - TimeRulerLayer.sideOffset * 2);
             CGFloat height = CGRectGetHeight(self.bounds) - y;
-            
-            UIBezierPath* path = [[UIBezierPath alloc]init];
-            [path moveToPoint:CGPointMake(x, y)];
-            [path addLineToPoint:CGPointMake(x + width, y)];
-            [path addLineToPoint:CGPointMake(x + width, y + height)];
-            [path addLineToPoint:CGPointMake(x, y + height)];
-            [path closePath];
-            self.rangeShapeArr[index].path = path.CGPath;
+            CGRect frame = CGRectMake(x, y, width, height);
+
+            self.rangeShapeArr[index].frame = frame;
           
             MARK_OPERATION_END(2)
             LLog(@"draw range %d used:%f ms  timeDis:%d", index, MARK_GET_USED_TIME(2) * 1000, endSecond - startSecond);
@@ -317,7 +311,7 @@
     return _majorMark;
 }
 
-- (NSMutableArray<CAShapeLayer *> *)rangeShapeArr {
+- (NSMutableArray<CALayer *> *)rangeShapeArr {
     if (_rangeShapeArr != nil) return _rangeShapeArr;
     _rangeShapeArr = [NSMutableArray array];
     return _rangeShapeArr;
