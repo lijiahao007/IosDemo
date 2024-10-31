@@ -11,7 +11,7 @@
 #define kIndicatorDefaultColor      ([UIColor blueColor])  //指示器默认颜色
 #define kIndicatorDefaultLength     80  //指示器高度
 
-@interface TimeRuler() <UIScrollViewDelegate>
+@interface TimeRuler() <UIScrollViewDelegate, UIGestureRecognizerDelegate>
 @property (nonatomic, assign) int currentTime;
 @property (nonatomic, strong) TimeRulerLayer* rulerLayer;
 @property (nonatomic, assign) CGFloat rulerWidth;
@@ -31,6 +31,8 @@
 
 @property (nonatomic, assign) double scaleTimestamp;
 @property (nonatomic, assign) BOOL isScaleJustNow;
+
+@property (nonatomic, strong) UIPinchGestureRecognizer* pinchGesture;
 
 @end
 
@@ -55,20 +57,27 @@
     [self setupScrollViewUI];
     [self setupRulerLayer];
     [self setupIndicator];
-    
-    UIPinchGestureRecognizer* pinch = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchAction:)];
-    [self addGestureRecognizer:pinch];
+    self.pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchAction:)];
+    self.pinchGesture.delegate = self;
+    self.pinchGesture.cancelsTouchesInView = NO;
+    [self.scrollView addGestureRecognizer:self.pinchGesture];
     
     self.backgroundColor = UIColor.whiteColor;
-    
 }
 
 -(void) pinchAction:(UIPinchGestureRecognizer*)gesture {
+    LLog(@"state:%lu", gesture.state);
     if (gesture.state == UIGestureRecognizerStateBegan) {
         _startScale = gesture.scale;
     } else if (gesture.state == UIGestureRecognizerStateChanged) {
         [self updateFrame:gesture.scale/_startScale];
         _startScale = gesture.scale;
+    } else if (gesture.state == UIGestureRecognizerStateEnded) {
+        _scrollView.scrollEnabled = YES;
+    }
+    
+    if (gesture.numberOfTouches < 2) {
+        [gesture setState:UIGestureRecognizerStateEnded];
     }
 }
 
@@ -214,9 +223,9 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-    // 缩放过程中，不做滚动处理。（避免浮点型误差导致的中心移动）
     if (_isScaleJustNow) {
+        // layoutSubviews 中的contentOffset设置会触发scrollViewDidScroll。
+        // 缩放过程中，不做滚动处理。（避免浮点型误差导致的中心移动）
         double dis = CFAbsoluteTimeGetCurrent() - _scaleTimestamp;
         _isScaleJustNow = NO;
         NSLog(@"scrollViewDidScroll dis:%f", dis);
@@ -225,11 +234,21 @@
         }
     }
     
+    if (scrollView.panGestureRecognizer.numberOfTouches == 2) {
+        // 两个手指接触时，事件响应移交到pinchGesture。
+        scrollView.scrollEnabled = NO;
+        [self.pinchGesture setState:UIGestureRecognizerStateBegan];
+        return;
+    } else {
+        scrollView.scrollEnabled = YES;
+    }
+    
     CGFloat proportionWidth = scrollView.contentOffset.x + scrollView.contentInset.left;
     CGFloat proportion = proportionWidth / (scrollView.contentSize.width - TimeRulerLayer.sideOffset * 2);
     int value = (int)ceil(proportion * 24 * 3600);
     NSLog(@"scrollViewDidScroll value:%d  proportionWidth:%f, proportion:%f", value, proportionWidth, proportion);
     _currentTime = value;
+    
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -240,6 +259,10 @@
     if (!decelerate) {
         _isTouch = NO;
     }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
 }
 
 @end

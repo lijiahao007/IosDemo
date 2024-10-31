@@ -18,9 +18,7 @@
 #define kScaleDefaultFontColor      ([UIColor colorWithHex:0x666666])  //刻度字体颜色
 #define kTextMarkDistance           4.0 // 刻度和文字的间距
 
-@interface TimeRulerLayer() {
-    double lastDisplayTs;
-}
+@interface TimeRulerLayer()
 @property (nonatomic, strong) TimeRulerMark* minorMark;
 @property (nonatomic, strong) TimeRulerMark* middleMark;
 @property (nonatomic, strong) TimeRulerMark* majorMark;
@@ -70,13 +68,11 @@
     [self setNeedsDisplay];
 }
 
-/**
- CAShapeLayer 使用硬件加速，更快一点。
- */
 -(void) initShadeLayer {
     for (CAShapeLayer* layer in self.rangeShapeArr) {
         [layer removeFromSuperlayer];
     }
+    [self.rangeShapeArr removeAllObjects];
 
     for (TimeRulerInfo* info in _selectedRange) {
         CALayer* shapeLayer = [[CAShapeLayer alloc]init];
@@ -115,30 +111,20 @@
 - (void)display {
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
-    double begin = CFAbsoluteTimeGetCurrent();
     [self drawToImage];
-    double curTs = CFAbsoluteTimeGetCurrent();
-    if (lastDisplayTs > 0) {
-        double dis = curTs - lastDisplayTs;
-        LLog(@"display used:%f ms  drawUse:%f ms", dis * 1000, (curTs - begin) * 1000);
-    }
-    lastDisplayTs = curTs;
     [CATransaction commit];
 }
 
 - (void) drawToImage {
-    MARK_OPERATION_INIT(1)
-    
     RulerMarkFrequency frequency = RulerMarkFrequency_Minute_10;
     
     // 每小时占用的宽度
     CGFloat hourWidth = (CGRectGetWidth(self.bounds) - TimeRulerLayer.sideOffset * 2) / 24.0;
     
-    NSLog(@"drawToImage: hourWidth=%f", hourWidth);
     // 根据宽度来判断显示标记的级别
-    if (hourWidth / 60.0 >= 5.0) { // hourWidth >= 180.0
+    if (hourWidth / 60.0 >= 4.0) { // hourWidth >= 180.0
         frequency = RulerMarkFrequency_Minute_1;
-    } else if (hourWidth / 6.0 >= 5.0) { // hourWidth >= 6.0
+    } else if (hourWidth / 6.0 >= 5.0) { // hourWidth >= 30.0
         frequency = RulerMarkFrequency_Minute_10;
     } else {
         frequency = RulerMarkFrequency_Hour;
@@ -156,7 +142,6 @@
     // 计算文字最宽宽度
     CGFloat hourTextWidth = attributeString.size.width;
     
-    MARK_OPERATION_BEGIN(1)
     // 绘制选中区域
     double total = 0;
 
@@ -173,11 +158,11 @@
         
         
         for (TimeRulerInfo* info in _selectedRange) {
-            MARK_OPERATION_INIT(2)
-            MARK_OPERATION_BEGIN(2)
+
             int startSecond = info.startSecond;
             int endSecond = info.endSecond;
 
+            // 使用CALayer绘制矩形块，会不直接在Image那里绘制要快一点。特别是Image特别长的时候。
             CGFloat x = (((CGFloat)startSecond) / (24*3600.0)) * (CGRectGetWidth(self.bounds) - TimeRulerLayer.sideOffset * 2) + TimeRulerLayer.sideOffset;
             CGFloat y = textSize.height + kTextMarkDistance + self.majorMark.size.height;
             CGFloat width = ((CGFloat)(endSecond - startSecond)) / (24 * 3600.0) * (CGRectGetWidth(self.bounds) - TimeRulerLayer.sideOffset * 2);
@@ -185,18 +170,10 @@
             CGRect frame = CGRectMake(x, y, width, height);
 
             self.rangeShapeArr[index].frame = frame;
-          
-            MARK_OPERATION_END(2)
-            LLog(@"draw range %d used:%f ms  timeDis:%d", index, MARK_GET_USED_TIME(2) * 1000, endSecond - startSecond);
-            total += MARK_GET_USED_TIME(2);
             index++;
         }
     }
     
-    MARK_OPERATION_END(1)
-    LLog(@"draw range used:%f ms  addAll:%f ms", MARK_GET_USED_TIME(1) * 1000, total * 1000);
-    
-    MARK_OPERATION_BEGIN(1)
     for (int i = 0; i <= numberOfLine; i++) {
         // 计算每个标记的属性
         CGFloat position = i * lineOffset;
@@ -232,18 +209,9 @@
         [self drawMarkIn:ctx position:position timeString:timeString mark:mark showText:showText];
     }
     
-    MARK_OPERATION_END(1)
-    LLog(@"draw mark used:%f ms", MARK_GET_USED_TIME(1) * 1000);
-    
-    MARK_OPERATION_BEGIN(1)
     UIImage* imageToDraw = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     self.contents = (__bridge id _Nullable)(imageToDraw.CGImage);
-    
-    MARK_OPERATION_END(1)
-    LLog(@"draw generate iamge used:%f ms", MARK_GET_USED_TIME(1) * 1000);
-    
-//    NSLog(@"TimeRulerLayer drawToImage numberOfLine:%d imageToDraw:%@", numberOfLine, imageToDraw);
 }
 
 -(void) drawMarkIn:(CGContextRef)context position:(CGFloat)position timeString:(NSString*)timeString mark:(TimeRulerMark*)mark showText:(BOOL)showText {
