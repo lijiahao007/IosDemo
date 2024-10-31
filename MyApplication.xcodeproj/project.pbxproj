@@ -96,6 +96,7 @@
 		54FB17472B8B9736000DE3D7 /* StackViewWithScrollViewDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB17452B8B9736000DE3D7 /* StackViewWithScrollViewDemoViewController.m */; };
 		54FB17482B8B9736000DE3D7 /* StackViewWithScrollViewDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54FB17462B8B9736000DE3D7 /* StackViewWithScrollViewDemoViewController.xib */; };
 		840A5C472C1FD81200C5A1D4 /* SDKDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 840A5C462C1FD81200C5A1D4 /* SDKDemo.m */; };
+		842988172CD21E380000284A /* UIColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 842988162CD21E380000284A /* UIColor+Hex.m */; };
 		84425C532BB2725E00EFCDE7 /* MemoryDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84425C512BB2725E00EFCDE7 /* MemoryDemoViewController.m */; };
 		84425C542BB2725E00EFCDE7 /* MemoryDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84425C522BB2725E00EFCDE7 /* MemoryDemoViewController.xib */; };
 		84425C572BB272B800EFCDE7 /* MemoryDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 84425C562BB272B800EFCDE7 /* MemoryDemo.m */; };
@@ -274,6 +275,8 @@
 		75BAAB4BF0ECAC0293A9691B /* Pods-MyApplication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyApplication.debug.xcconfig"; path = "Target Support Files/Pods-MyApplication/Pods-MyApplication.debug.xcconfig"; sourceTree = "<group>"; };
 		840A5C452C1FD81200C5A1D4 /* SDKDemo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDKDemo.h; sourceTree = "<group>"; };
 		840A5C462C1FD81200C5A1D4 /* SDKDemo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDKDemo.m; sourceTree = "<group>"; };
+		842988152CD21E020000284A /* UIColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hex.h"; sourceTree = "<group>"; };
+		842988162CD21E380000284A /* UIColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hex.m"; sourceTree = "<group>"; };
 		84425C502BB2725E00EFCDE7 /* MemoryDemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryDemoViewController.h; sourceTree = "<group>"; };
 		84425C512BB2725E00EFCDE7 /* MemoryDemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MemoryDemoViewController.m; sourceTree = "<group>"; };
 		84425C522BB2725E00EFCDE7 /* MemoryDemoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MemoryDemoViewController.xib; sourceTree = "<group>"; };
@@ -342,6 +345,8 @@
 		54134B332AD761EC007FBE7C /* tools */ = {
 			isa = PBXGroup;
 			children = (
+				842988162CD21E380000284A /* UIColor+Hex.m */,
+				842988152CD21E020000284A /* UIColor+Hex.h */,
 				54134B342AD7620A007FBE7C /* HSColorUtils.h */,
 				54134B352AD7620A007FBE7C /* HSColorUtils.m */,
 			);
@@ -939,6 +944,7 @@
 				54134C722ADEEF24007FBE7C /* scale_msa.cc in Sources */,
 				54134C592ADEEF24007FBE7C /* mjpeg_decoder.cc in Sources */,
 				54134C562ADEEF24007FBE7C /* compare_win.cc in Sources */,
+				842988172CD21E380000284A /* UIColor+Hex.m in Sources */,
 				54134C532ADEEF24007FBE7C /* row_mmi.cc in Sources */,
 				54134C5E2ADEEF24007FBE7C /* compare.cc in Sources */,
 				844794AF2CC8AE8400B514D4 /* TimeRulerLayer.m in Sources */,

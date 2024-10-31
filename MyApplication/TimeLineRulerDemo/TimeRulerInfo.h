@@ -12,7 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TimeRulerInfo : NSObject
 @property (nonatomic, assign) int startSecond;
 @property (nonatomic, assign) int endSecond;
-- (instancetype)initWithStartSecond:(int)startSecnd endSecond:(int)endSecond;
+@property (nonatomic, strong) UIColor* color;
+@property (nonatomic, assign) CGFloat priority; //优先级越高，越不会被覆盖。
+
+- (instancetype)initWithStartSecond:(int)startSecnd endSecond:(int)endSecond color:(UIColor*)color priority:(CGFloat)priority;
 @end
 
 NS_ASSUME_NONNULL_END

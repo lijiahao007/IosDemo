@@ -10,7 +10,7 @@
 typedef enum : int {
     RulerMarkFrequency_Hour = 3600, //小时标记频率3600秒
     RulerMarkFrequency_Minute_10 = 600, //10分钟标记频率
-    RulerMarkFrequency_Minute_2 = 120, //2分钟标记频率
+    RulerMarkFrequency_Minute_1 = 60, // 1分钟标记频率
     // 如需要更小时间在此添加枚举值
 } RulerMarkFrequency;
 

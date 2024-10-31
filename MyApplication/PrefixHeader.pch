@@ -22,10 +22,18 @@
 #define X_WeakSelf __weak typeof(self) weakSelf = self;
 #define X_StrongSelf __strong typeof(weakSelf) strongSelf = weakSelf;
 
+#define LLog(...) NSLog((@"%@（%s-----%d）"), [NSString stringWithFormat:__VA_ARGS__], __func__, __LINE__)
+
+#define MARK_OPERATION_INIT(tag) double beginTs_13315_##tag = 0, endTs_13315_##tag = 0, dis_13315_##tag;
+#define MARK_OPERATION_BEGIN(tag) beginTs_13315_##tag = CFAbsoluteTimeGetCurrent();
+#define MARK_OPERATION_END(tag)  endTs_13315_##tag = CFAbsoluteTimeGetCurrent(); dis_13315_##tag = endTs_13315_##tag - beginTs_13315_##tag;
+#define MARK_GET_USED_TIME(tag) (dis_13315_##tag)
+
 #import "HSColorUtils.h"
 #import "AppDelegate.h"
 #import "SceneDelegate.h"
 #import <Masonry/Masonry.h>
+#import "UIColor+Hex.h"
 #endif /* __OBJC__ */
 
 #endif /* PrefixHeader_pch */
