@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TimeRulerInfo : NSObject
+@interface TimeRulerInfo : NSObject <NSCopying>
 @property (nonatomic, assign) int startSecond;
 @property (nonatomic, assign) int endSecond;
 @property (nonatomic, strong) UIColor* color;

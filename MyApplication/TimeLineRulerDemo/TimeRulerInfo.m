@@ -23,4 +23,15 @@
 {
     return [NSString stringWithFormat:@"TimeRulerInfo {s:%d e:%d priority:%f}", _startSecond, _endSecond, _priority];
 }
+- (nonnull id)copyWithZone:(nullable NSZone *)zone { 
+    TimeRulerInfo *info = [[self class] allocWithZone:zone];
+    
+    info.startSecond = _startSecond;
+    info.endSecond = _endSecond;
+    info.color = [_color copyWithZone:zone];
+    info.priority = _priority;
+
+    return info;
+}
+
 @end

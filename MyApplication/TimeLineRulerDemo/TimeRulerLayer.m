@@ -24,7 +24,7 @@
 @property (nonatomic, strong) TimeRulerMark* minorMark;
 @property (nonatomic, strong) TimeRulerMark* middleMark;
 @property (nonatomic, strong) TimeRulerMark* majorMark;
-
+@property (nonatomic, strong) NSMutableArray<CAShapeLayer*>* rangeShapeArr;
 
 @end
 
@@ -50,7 +50,6 @@
 
 - (void)setSelectedRange:(NSArray<TimeRulerInfo *> *)selectedRange {
     NSLog(@"TimeRulerLayer setSelectedRange");
-    _selectedRange = [self sortByPriority:selectedRange];
     
     // 1. KVO 通知
     [self willChangeValueForKey:@"selectedRange"];
@@ -62,12 +61,32 @@
     }
     
     // 3. 执行 copy
-    _selectedRange = [selectedRange copy];
+    _selectedRange = [self sortByPriority:selectedRange];
+    [self initShadeLayer];
     
     // 4. KVO 通知
     [self didChangeValueForKey:@"items"];
     
     [self setNeedsDisplay];
+}
+
+/**
+ CAShapeLayer 使用硬件加速，更快一点。
+ */
+-(void) initShadeLayer {
+    for (CAShapeLayer* layer in self.rangeShapeArr) {
+        [layer removeFromSuperlayer];
+    }
+
+    for (TimeRulerInfo* info in _selectedRange) {
+        CAShapeLayer* shapeLayer = [[CAShapeLayer alloc]init];
+        
+        shapeLayer.fillColor = [info.color colorWithAlphaComponent:0.8].CGColor;
+        shapeLayer.anchorPoint = CGPointMake(0, 0);
+        
+        [self.rangeShapeArr addObject:shapeLayer];
+        [self addSublayer:shapeLayer];
+    }
 }
 
 /**
@@ -77,9 +96,9 @@
     NSArray* res = nil;
     if (targetArr) {
         res = [targetArr sortedArrayUsingComparator:^NSComparisonResult(TimeRulerInfo*  _Nonnull obj1, TimeRulerInfo*  _Nonnull obj2) {
-            if (obj1.priority > obj2.priority) {
+            if (obj1.priority < obj2.priority) {
                 return NSOrderedAscending;
-            } else if (obj1.priority < obj2.priority) {
+            } else if (obj1.priority > obj2.priority) {
                 return NSOrderedDescending;
             } else {
                 return NSOrderedSame;
@@ -142,7 +161,7 @@
     // 绘制选中区域
     double total = 0;
 
-    if (_selectedRange && ctx) {
+    if (_selectedRange) {
         
         NSDictionary *textAttribute = @{
             NSFontAttributeName: self.majorMark.font,
@@ -152,21 +171,27 @@
         CGSize textSize = attributeString.size;
         
         int index = 0;
+        
+        
         for (TimeRulerInfo* info in _selectedRange) {
             MARK_OPERATION_INIT(2)
-
+            MARK_OPERATION_BEGIN(2)
             int startSecond = info.startSecond;
             int endSecond = info.endSecond;
-            CGContextSetFillColorWithColor(ctx,  [info.color colorWithAlphaComponent:0.8].CGColor);
 
             CGFloat x = (((CGFloat)startSecond) / (24*3600.0)) * (CGRectGetWidth(self.bounds) - TimeRulerLayer.sideOffset * 2) + TimeRulerLayer.sideOffset;
             CGFloat y = textSize.height + kTextMarkDistance + self.majorMark.size.height;
             CGFloat width = ((CGFloat)(endSecond - startSecond)) / (24 * 3600.0) * (CGRectGetWidth(self.bounds) - TimeRulerLayer.sideOffset * 2);
             CGFloat height = CGRectGetHeight(self.bounds) - y;
-            CGRect rect = CGRectMake(x, y, width, height);
             
-            MARK_OPERATION_BEGIN(2)
-            CGContextFillRect(ctx, rect);
+            UIBezierPath* path = [[UIBezierPath alloc]init];
+            [path moveToPoint:CGPointMake(x, y)];
+            [path addLineToPoint:CGPointMake(x + width, y)];
+            [path addLineToPoint:CGPointMake(x + width, y + height)];
+            [path addLineToPoint:CGPointMake(x, y + height)];
+            [path closePath];
+            self.rangeShapeArr[index].path = path.CGPath;
+          
             MARK_OPERATION_END(2)
             LLog(@"draw range %d used:%f ms  timeDis:%d", index, MARK_GET_USED_TIME(2) * 1000, endSecond - startSecond);
             total += MARK_GET_USED_TIME(2);
@@ -218,11 +243,11 @@
     
     MARK_OPERATION_BEGIN(1)
     UIImage* imageToDraw = UIGraphicsGetImageFromCurrentImageContext();
-    MARK_OPERATION_END(1)
-    LLog(@"draw generate iamge used:%f ms", MARK_GET_USED_TIME(1) * 1000);
-    
     UIGraphicsEndImageContext();
     self.contents = (__bridge id _Nullable)(imageToDraw.CGImage);
+    
+    MARK_OPERATION_END(1)
+    LLog(@"draw generate iamge used:%f ms", MARK_GET_USED_TIME(1) * 1000);
     
 //    NSLog(@"TimeRulerLayer drawToImage numberOfLine:%d imageToDraw:%@", numberOfLine, imageToDraw);
 }
@@ -292,4 +317,9 @@
     return _majorMark;
 }
 
+- (NSMutableArray<CAShapeLayer *> *)rangeShapeArr {
+    if (_rangeShapeArr != nil) return _rangeShapeArr;
+    _rangeShapeArr = [NSMutableArray array];
+    return _rangeShapeArr;
+}
 @end
