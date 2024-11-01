@@ -12,7 +12,7 @@
 #define kIndicatorDefaultLength     80  //指示器高度
 
 @interface TimeRuler() <UIScrollViewDelegate, UIGestureRecognizerDelegate>
-@property (nonatomic, assign) int currentTime;
+@property (nonatomic, assign) NSInteger currentTime;
 @property (nonatomic, strong) TimeRulerLayer* rulerLayer;
 @property (nonatomic, assign) CGFloat rulerWidth;
 @property (nonatomic, assign) CGFloat oldRulerWidth;
@@ -27,7 +27,6 @@
 
 @property (nonatomic, strong) UIImageView* indicatorView;
 @property (nonatomic, strong) UIView* rulerBackgroundView;
-@property (nonatomic, assign) CGFloat indicatorLength;
 
 @property (nonatomic, assign) double scaleTimestamp;
 @property (nonatomic, assign) BOOL isScaleJustNow;
@@ -62,7 +61,7 @@
     self.pinchGesture.cancelsTouchesInView = NO;
     [self.scrollView addGestureRecognizer:self.pinchGesture];
     
-    self.backgroundColor = UIColor.whiteColor;
+    self.backgroundColor = UIColor.clearColor;
 }
 
 -(void) pinchAction:(UIPinchGestureRecognizer*)gesture {
@@ -83,8 +82,10 @@
 
 -(void) updateFrame:(CGFloat)scale {
     CGFloat updateRulerWidth = _rulerLayer.bounds.size.width * scale;
-    if (updateRulerWidth < (CGRectGetWidth(self.bounds) + 2 * TimeRulerLayer.sideOffset)){
-        updateRulerWidth = (CGRectGetWidth(self.bounds) + 2 * TimeRulerLayer.sideOffset);
+    CGFloat rulerMinWidth = [self getMinRulerWidth];
+
+    if (updateRulerWidth < rulerMinWidth){
+        updateRulerWidth = rulerMinWidth;
     }
     
     if (updateRulerWidth > TimeRulerLayer.rulerMaxWidth) {
@@ -93,6 +94,7 @@
     
     _oldRulerWidth = _rulerWidth;
     _rulerWidth = updateRulerWidth;
+    
     [self setNeedsLayout];
 }
 
@@ -116,9 +118,31 @@
 
 -(void) setupRulerLayer {
     _rulerLayer = [[TimeRulerLayer alloc]init];
-    _rulerLayer.showTopMark = YES;
-    _rulerLayer.showBottomMark = NO;
+    [self updateRulerStyle];
     [_scrollView.layer addSublayer:_rulerLayer];
+}
+
+- (void)setStyle:(TimeRulerStyle)style {
+    _style = style;
+    [self updateRulerStyle];
+}
+
+- (void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    [_rulerLayer setNeedsDisplay];
+}
+
+-(void) updateRulerStyle {
+    if (_style == TimeRulerStyleDefault) {
+        _rulerLayer.showTopMark = YES;
+        _rulerLayer.showBottomMark = NO;
+        _rulerLayer.textPosition = TimeRulerLayer_TextTop;
+    } else {
+        _rulerLayer.showTopMark = YES;
+        _rulerLayer.showBottomMark = YES;
+        _rulerLayer.textPosition = TimeRulerLayer_TextCenter;
+    }
+    [self.rulerLayer setNeedsDisplay];
 }
 
 -(void) setupIndicator {
@@ -131,13 +155,19 @@
     CGSize size = self.bounds.size;
     if(self.style == TimeRulerStyleDefault) {
         //modify by 547
+
+        
         NSDictionary *strAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:kScaleDefaultFontSize]};;
         NSString *str = [self timeFormatted:0];
         CGRect strRect = [str boundingRectWithSize:CGSizeMake(MAXFLOAT, MAXFLOAT)
                                            options:NSStringDrawingUsesLineFragmentOrigin
                                         attributes:strAttributes
                                            context:nil];
-        _indicatorView.frame = CGRectMake(size.width * 0.5 - 2/ 2.0, strRect.size.height + 4, 2, self.indicatorLength);
+        
+        CGFloat indicatorLength = self.bounds.size.height - strRect.size.height - 4;
+        CGFloat indicatorWidth = 2.0;
+        
+        _indicatorView.frame = CGRectMake(size.width * 0.5 - indicatorWidth/ 2.0, strRect.size.height + 4, indicatorWidth, indicatorLength);
         _indicatorView.layer.cornerRadius = 2;
         [_indicatorView setImage:nil];
         _indicatorView.backgroundColor = HSColorScheme.colorBlue;
@@ -145,33 +175,16 @@
         //end by 547
     }
     else {
-        _indicatorView.frame = CGRectMake(size.width * 0.5 -  8/ 2.0, size.height - self.indicatorLength, 8, self.indicatorLength);
+        CGFloat indicatorWidth = 8.0;
+        CGFloat indicatorHeight =  self.bounds.size.height;
+
+        _indicatorView.frame = CGRectMake(size.width * 0.5 - indicatorWidth/2, 0, indicatorWidth, indicatorHeight);
         [_indicatorView setImage:[UIImage imageNamed:@"icon_sjz_axis"]];
         _indicatorView.backgroundColor = UIColor.clearColor;
         _rulerBackgroundView.hidden = YES;
     }
 }
 
-//指示器长度
-- (CGFloat)indicatorLength {
-    if (_indicatorLength <= 0) {
-        if(_style == TimeRulerStyleDefault){
-            //modify by 547
-            NSDictionary *strAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:kScaleDefaultFontSize]};;
-            NSString *str = [self timeFormatted:0];
-            CGRect strRect = [str boundingRectWithSize:CGSizeMake(MAXFLOAT, MAXFLOAT)
-                                               options:NSStringDrawingUsesLineFragmentOrigin
-                                            attributes:strAttributes
-                                               context:nil];
-            _indicatorLength = self.bounds.size.height - strRect.size.height - 4;
-            //end by 547
-        }
-        else{
-            _indicatorLength = self.bounds.size.height - 2;
-        }
-    }
-    return _indicatorLength;
-}
 
 
 - (NSString *)timeFormatted:(int)totalSeconds{
@@ -184,6 +197,10 @@
     
 }
 
+-(CGFloat) getMinRulerWidth {
+    return (CGRectGetWidth(self.bounds) + 2 * TimeRulerLayer.sideOffset);
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     
@@ -191,6 +208,11 @@
     
     _scrollView.frame = self.bounds;
     _scrollView.contentInset = UIEdgeInsetsMake(0, sideInset - TimeRulerLayer.sideOffset, 0, sideInset - TimeRulerLayer.sideOffset);
+        
+    if (_rulerWidth < [self getMinRulerWidth]) {
+        // 横竖屏切换时，bounds宽度会变化。
+        _rulerWidth = [self getMinRulerWidth];
+    }
     
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
@@ -211,7 +233,7 @@
     [self updateIndicatorFrame];
 }
 
--(CGPoint) contentOffset:(int)current {
+-(CGPoint) contentOffset:(NSInteger)current {
     CGFloat proportion = current / (24 * 3600.0);
     CGFloat proportionWidth = (_scrollView.contentSize.width - TimeRulerLayer.sideOffset * 2) * proportion;
     return CGPointMake(proportionWidth - _scrollView.contentInset.left, _scrollView.contentOffset.y);
@@ -245,10 +267,13 @@
     
     CGFloat proportionWidth = scrollView.contentOffset.x + scrollView.contentInset.left;
     CGFloat proportion = proportionWidth / (scrollView.contentSize.width - TimeRulerLayer.sideOffset * 2);
-    int value = (int)ceil(proportion * 24 * 3600);
-    NSLog(@"scrollViewDidScroll value:%d  proportionWidth:%f, proportion:%f", value, proportionWidth, proportion);
-    _currentTime = value;
+    int64_t value = (int64_t)ceil(proportion * 24 * 3600);
+    NSLog(@"scrollViewDidScroll value:%lld %f  proportionWidth:%f, proportion:%f", value, ceil(proportion * 24 * 3600), proportionWidth, proportion);
     
+    if (value >= 0) {
+        _currentTime = value;
+    }
+   
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {

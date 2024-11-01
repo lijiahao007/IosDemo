@@ -38,8 +38,17 @@
 //    ];
 //    
     NSMutableArray* selectedArray = [NSMutableArray array];
-    for (int i = 0; i < 200; i++) {
-        TimeRulerInfo* info = [[TimeRulerInfo alloc] initWithStartSecond:0 endSecond:60*10 color:[HSColorScheme colorRedNormal] priority:1];
+    for (int i = 0; i < 20; i++) {
+        uint32_t startSecond = arc4random() % (24*3600);
+        
+        if (startSecond > 3600) {
+            startSecond -= 3600;
+        }
+        
+        uint32_t endSecond = startSecond + arc4random() % 3000 + 600;
+        NSLog(@"{s:%u, e:%u}", startSecond, endSecond);
+        UIColor* ranColor = [UIColor colorWithHex:arc4random()];
+        TimeRulerInfo* info = [[TimeRulerInfo alloc] initWithStartSecond:startSecond endSecond:endSecond color:ranColor priority:1];
         [selectedArray addObject:info];
     }
 
@@ -54,9 +63,21 @@
     NSLog(@"viewWillTransitionToSize: size.width:%f size.height:%f", size.width, size.height);
     
     CGRect rect = _timeRuler.frame;
-    rect.origin.y = size.height * 0.5 - 40.0;
     rect.size.width = size.width;
+    
+    if (size.width > size.height) {
+        _timeRuler.style = TimeRulerStyleLandscape;
+        rect.size.height = 80;
+        rect.origin.y = size.height * 0.5 - 40.0;
+
+    } else {
+        _timeRuler.style = TimeRulerStyleDefault;
+        rect.size.height = 80;
+        rect.origin.y = size.height * 0.5 - 40.0;
+    }
+    
     _timeRuler.frame = rect;
+
 }
 
 
