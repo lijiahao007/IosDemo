@@ -7,6 +7,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #define kScaleDefaultFontSize       9.0  //刻度字体
+#define kScaleDefaultColor          ([UIColor lightGrayColor])  //刻度颜色、文字颜色
 
 typedef enum : NSUInteger {
     TimeRulerLayer_TextCenter,
@@ -23,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, class, readonly) CGFloat rulerMaxWidth;
 @property (nonatomic, assign) BOOL showTopMark;
 @property (nonatomic, assign) BOOL showBottomMark;
+@property (nonatomic, strong) UIColor* timeTextColor;
 @end
 
 NS_ASSUME_NONNULL_END

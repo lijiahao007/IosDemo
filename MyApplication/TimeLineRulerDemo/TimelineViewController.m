@@ -8,23 +8,32 @@
 #import "TimelineViewController.h"
 #import "TimeRuler.h"
 #import "TimeRulerInfo.h"
-@interface TimelineViewController ()
+@interface TimelineViewController () <TimeRulerDelegate>
 @property (nonatomic, strong) TimeRuler* timeRuler;
+@property (nonatomic, assign) double currentTime;
+@property (nonatomic, strong) CADisplayLink *displayLink;
 @end
 
 @implementation TimelineViewController
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [_displayLink invalidate];
+    _displayLink = nil;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     // 设置背景颜色为白色
     self.view.backgroundColor = [UIColor colorWithHex:0xfafafa];
-    
+
 //    // 创建 TimeRuler 实例并设置其 frame
     _timeRuler = [[TimeRuler alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds) * 0.5 - 50.0, CGRectGetWidth(self.view.bounds), 100.0)];
     
     _timeRuler.style = TimeRulerStyleDefault;
-//    
+    _timeRuler.delegate = self;
+    
+//
 //    NSArray* selectedArray = @[
 //        [[TimeRulerInfo alloc] initWithStartSecond:60 endSecond:300 color:[HSColorScheme colorRedNormal] priority:1],
 //        [[TimeRulerInfo alloc] initWithStartSecond:500 endSecond:800 color:[HSColorScheme colorBlue] priority:1],
@@ -57,6 +66,21 @@
     // 将时间尺添加到当前视图
     [self.view addSubview:_timeRuler];
     
+    _currentTime = 600;
+    [_timeRuler setCurrentTime:_currentTime];
+    
+    _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateAnimation:)];
+    [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+}
+
+- (void)updateAnimation:(CADisplayLink *)displayLink {
+    // 这里是动画更新的逻辑
+    // 每帧都会调用此方法
+    // displayLink.timestamp 和 displayLink.duration 可以帮助进行动画的计算
+    
+    _currentTime ++;
+    [_timeRuler setCurrentTime:_currentTime];
+
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
@@ -69,15 +93,26 @@
         _timeRuler.style = TimeRulerStyleLandscape;
         rect.size.height = 80;
         rect.origin.y = size.height * 0.5 - 40.0;
-
+        self.view.backgroundColor = [UIColor colorWithHex:0x1a1a1a];
     } else {
         _timeRuler.style = TimeRulerStyleDefault;
         rect.size.height = 80;
         rect.origin.y = size.height * 0.5 - 40.0;
+       
+        self.view.backgroundColor = [UIColor colorWithHex:0xfafafa];
     }
     
     _timeRuler.frame = rect;
 
+}
+
+- (void)timeRulerDidScroll:(CGFloat)currentSecond {
+    NSLog(@"timeRulerDidScroll :%f", currentSecond);
+    _currentTime = currentSecond;
+}
+
+- (void)timeRulerScrollDidEndWithSecond:(CGFloat)currentSeconds {
+    NSLog(@"timeRulerScrollDidEndWithSecond :%f", currentSeconds);
 }
 
 

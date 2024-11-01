@@ -14,8 +14,6 @@
 #define kMiddleScaleDefaultLength   15.0  //中间刻度高度
 #define kMinorScaleDefaultLength    10.0  //小刻度高度
 #define kRulerDefaultBackgroundColor    ([UIColor clearColor])  //刻度尺背景颜色
-#define kScaleDefaultColor          ([UIColor lightGrayColor])  //刻度颜色
-#define kScaleDefaultFontColor      ([UIColor colorWithHex:0x666666])  //刻度字体颜色
 #define kTextMarkDistance           4.0 // 刻度和文字的间距
 
 @interface TimeRulerLayer()
@@ -37,6 +35,7 @@
         _showTopMark = YES;
         _showBottomMark = NO;
         _textPosition = TimeRulerLayer_TextTop;
+        _timeTextColor = kScaleDefaultColor;
         [self setupTimeMarkLayer];
     }
     return self;
@@ -45,6 +44,14 @@
 -(void) setupTimeMarkLayer {
     _timeMarkLayer = [[CALayer alloc] init];
     _timeMarkLayer.backgroundColor = UIColor.clearColor.CGColor;
+}
+
+- (void)setTimeTextColor:(UIColor *)timeTextColor {
+    _timeTextColor = timeTextColor;
+    
+    self.majorMark.textColor = timeTextColor;
+    self.minorMark.textColor = timeTextColor;
+    self.middleMark.textColor = timeTextColor;
 }
 
 + (CGFloat)sideOffset {
@@ -280,6 +287,7 @@
     _minorMark.size = CGSizeMake(1.0, kMinorScaleDefaultLength);
     _minorMark.color = kScaleDefaultColor;
     _minorMark.font = [UIFont systemFontOfSize:kScaleDefaultFontSize];
+    _majorMark.textColor = kScaleDefaultColor;
     return _minorMark;
 }
 
@@ -291,6 +299,8 @@
     _middleMark.size = CGSizeMake(1.0, kMiddleScaleDefaultLength);
     _middleMark.color = kScaleDefaultColor;
     _middleMark.font = [UIFont systemFontOfSize:kScaleDefaultFontSize];
+    _majorMark.textColor = kScaleDefaultColor;
+
     return _middleMark;
 }
 
@@ -302,6 +312,7 @@
     _majorMark.size = CGSizeMake(1.0, kMajorScaleDefaultLength);
     _majorMark.color = kScaleDefaultColor;
     _majorMark.font = [UIFont systemFontOfSize:kScaleDefaultFontSize];
+    _majorMark.textColor = kScaleDefaultColor;
     return _majorMark;
 }
 

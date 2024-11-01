@@ -28,9 +28,6 @@
 @property (nonatomic, strong) UIImageView* indicatorView;
 @property (nonatomic, strong) UIView* rulerBackgroundView;
 
-@property (nonatomic, assign) double scaleTimestamp;
-@property (nonatomic, assign) BOOL isScaleJustNow;
-
 @property (nonatomic, strong) UIPinchGestureRecognizer* pinchGesture;
 
 @end
@@ -49,6 +46,17 @@
         [self setupUI];
     }
     return self;
+}
+
+/**
+ 用于外部设置时间, touch的时候设置会不成功
+ */
+- (void)setCurrentTime:(NSInteger)currentTime {
+    if (!_isTouch) {
+        _currentTime = currentTime;
+        LLog(@"currentTime:%ld", currentTime);
+        _scrollView.contentOffset = [self contentOffset:_currentTime];
+    }
 }
 
 - (void) setupUI {
@@ -137,10 +145,12 @@
         _rulerLayer.showTopMark = YES;
         _rulerLayer.showBottomMark = NO;
         _rulerLayer.textPosition = TimeRulerLayer_TextTop;
+        _rulerLayer.timeTextColor = kScaleDefaultColor;
     } else {
         _rulerLayer.showTopMark = YES;
         _rulerLayer.showBottomMark = YES;
         _rulerLayer.textPosition = TimeRulerLayer_TextCenter;
+        _rulerLayer.timeTextColor = [UIColor whiteColor];
     }
     [self.rulerLayer setNeedsDisplay];
 }
@@ -211,12 +221,12 @@
         
     if (_rulerWidth < [self getMinRulerWidth]) {
         // 横竖屏切换时，bounds宽度会变化。
+        _oldRulerWidth = _rulerWidth;
         _rulerWidth = [self getMinRulerWidth];
     }
     
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
-//    NSLog(@"TimeRuler layoutSubviews _rulerWidth:%f height:%f _currentTime:%d", _rulerWidth, CGRectGetHeight(self.bounds), _currentTime);
     _rulerLayer.frame = CGRectMake(0, 0, _rulerWidth, CGRectGetHeight(self.bounds));
     [CATransaction commit];
     
@@ -227,9 +237,6 @@
     
     // 保证缩放过程中心保持不变
     _scrollView.contentOffset = [self contentOffset:_currentTime];
-    NSLog(@"TimeRuler layoutSubviews");
-    _scaleTimestamp = CFAbsoluteTimeGetCurrent();
-    _isScaleJustNow = YES;
     [self updateIndicatorFrame];
 }
 
@@ -245,15 +252,14 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (_isScaleJustNow) {
-        // layoutSubviews 中的contentOffset设置会触发scrollViewDidScroll。
-        // 缩放过程中，不做滚动处理。（避免浮点型误差导致的中心移动）
-        double dis = CFAbsoluteTimeGetCurrent() - _scaleTimestamp;
-        _isScaleJustNow = NO;
-        NSLog(@"scrollViewDidScroll dis:%f", dis);
-        if (dis < 0.1) {
-            return;
-        }
+    NSLog(@"scrollViewDidScroll isDragging:%d  isTracking:%d  isDecelerating:%d", scrollView.isDragging,  scrollView.isTracking, scrollView.isDecelerating);
+    
+    if (!(scrollView.isDragging || scrollView.isTracking || scrollView.isDecelerating)) {
+        return;
+    }
+    
+    if (scrollView.isTracking && !scrollView.isDragging) {
+        return;
     }
     
     if (scrollView.panGestureRecognizer.numberOfTouches == 2) {
@@ -272,22 +278,45 @@
     
     if (value >= 0) {
         _currentTime = value;
+        
+        if (_delegate && [_delegate respondsToSelector:@selector(timeRulerDidScroll:)]) {
+            [_delegate timeRulerDidScroll:value];
+        }
     }
    
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     _isTouch = NO;
+    
+    NSLog(@"scrollViewDidEndDecelerating");
+    if (_delegate && [_delegate respondsToSelector:@selector(timeRulerScrollDidEndWithSecond:)]) {
+        [_delegate timeRulerScrollDidEndWithSecond:_currentTime];
+    }
+    
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    NSLog(@"scrollViewDidEndDragging decelerate:%d", decelerate);
+
     if (!decelerate) {
         _isTouch = NO;
+        
+        if (_delegate && [_delegate respondsToSelector:@selector(timeRulerScrollDidEndWithSecond:)]) {
+            [_delegate timeRulerScrollDidEndWithSecond:_currentTime];
+        }
     }
 }
+
+
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
 }
+
+- (BOOL)isEditing{
+    return _scrollView.isDragging || _scrollView.isTracking || _scrollView.isDecelerating;
+}
+
 
 @end
