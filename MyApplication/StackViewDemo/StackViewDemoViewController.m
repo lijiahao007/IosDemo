@@ -12,6 +12,9 @@
 #import "UILabel1.h"
 #import "UILabel2.h"
 #import "UILabel3.h"
+#import "UIButton1.h"
+#import "UIButton2.h"
+#import "UIButton3.h"
 #import "IntrinsicContentView.h"
 /**
  总结：
@@ -22,6 +25,7 @@
 @interface StackViewDemoViewController ()
 
 @property (nonatomic, strong) UIStackView* stackView1;
+@property (nonatomic, strong) UIStackView* stackView2;
 
 @end
 
@@ -30,10 +34,72 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setStackViewDemo1];
-    
-    
+//    [self setStackViewDemo1];
+    [self setStackViewDemo2];
 }
+
+- (void) setStackViewDemo2 {
+    
+    _stackView2 = [[UIStackView alloc]init];
+    _stackView2.spacing = 10;
+    _stackView2.alignment = UIStackViewAlignmentCenter;
+    _stackView2.distribution = UIStackViewDistributionEqualSpacing;
+    _stackView2.translatesAutoresizingMaskIntoConstraints = NO;
+    _stackView2.backgroundColor = [UIColor yellowColor];
+    [self.view addSubview:_stackView2];
+
+    [_stackView2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.trailing.equalTo(self.view).offset(-10);
+        make.top.equalTo(self.view).offset(200);
+        make.height.mas_equalTo(50);
+    }];
+    
+    
+    UIButton1* btn1 = [UIButton1 new];
+    btn1.backgroundColor = [UIColor redColor];
+    [btn1 setTitle:@"Button1" forState:UIControlStateNormal];
+    
+    UIButton2* btn2 = [UIButton2 new];
+    btn2.backgroundColor = [UIColor blueColor];
+    [btn2 setTitle:@"Button2" forState:UIControlStateNormal];
+    
+    UIButton3* btn3 = [UIButton3 new];
+    btn3.backgroundColor = [UIColor greenColor];
+    [btn3 setTitle:@"Button3" forState:UIControlStateNormal];
+    
+    [_stackView2 addArrangedSubview:btn1];
+    [_stackView2 addArrangedSubview:btn2];
+    [_stackView2 addArrangedSubview:btn3];
+    
+    NSArray<UIButton*>* btns = @[btn1, btn2, btn3];
+    [btns enumerateObjectsUsingBlock:^(UIButton * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        obj.tag = idx;
+        [obj addTarget:self action:@selector(onButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    }];
+    
+    
+    UIButton* btn = [UIButton new];
+    btn.tag = 100;
+    [btn setTitle:@"Clear" forState:UIControlStateNormal];
+    [self.view addSubview:btn];
+    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self.view);
+    }];
+    
+    [btn addTarget:self action:@selector(onButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+}
+ 
+
+-(void) onButtonClick:(UIButton*)sender {
+    if (sender.tag == 100) {
+        [_stackView2.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            obj.hidden = NO;
+        }];
+    } else if (sender.tag == 0 || sender.tag == 1 || sender.tag == 2) {
+        sender.hidden = YES;
+    }
+}
+
 
 -(void) setStackViewDemo1 {
     _stackView1 = [[UIStackView alloc]init];
