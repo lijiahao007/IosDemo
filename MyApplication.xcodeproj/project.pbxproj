@@ -111,6 +111,7 @@
 		84AF02802BB5669A004CE44A /* AudioViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AF027E2BB5669A004CE44A /* AudioViewController.xib */; };
 		84AF02832BB56C55004CE44A /* PermissionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AF02822BB56C55004CE44A /* PermissionManager.m */; };
 		84AF02902BBAC525004CE44A /* pcm_raw_data.raw in Resources */ = {isa = PBXBuildFile; fileRef = 84AF028F2BBAC525004CE44A /* pcm_raw_data.raw */; };
+		84B129342D69D2D80017768F /* GCDTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B129332D69D2D80017768F /* GCDTimer.m */; };
 		84E9F32C2C2915DE00E48F52 /* SelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E9F3262C2915DD00E48F52 /* SelectViewController.m */; };
 		84E9F32D2C2915DE00E48F52 /* SelectUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E9F3272C2915DD00E48F52 /* SelectUIView.m */; };
 		84E9F32E2C2915DE00E48F52 /* TimerDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84E9F3292C2915DD00E48F52 /* TimerDemoViewController.xib */; };
@@ -306,6 +307,8 @@
 		84AF02812BB56C55004CE44A /* PermissionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PermissionManager.h; sourceTree = "<group>"; };
 		84AF02822BB56C55004CE44A /* PermissionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PermissionManager.m; sourceTree = "<group>"; };
 		84AF028F2BBAC525004CE44A /* pcm_raw_data.raw */ = {isa = PBXFileReference; lastKnownFileType = file; path = pcm_raw_data.raw; sourceTree = "<group>"; };
+		84B129322D69D2D80017768F /* GCDTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GCDTimer.h; sourceTree = "<group>"; };
+		84B129332D69D2D80017768F /* GCDTimer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GCDTimer.m; sourceTree = "<group>"; };
 		84E9F3242C2915DD00E48F52 /* SelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectViewController.h; sourceTree = "<group>"; };
 		84E9F3252C2915DD00E48F52 /* SelectUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectUIView.h; sourceTree = "<group>"; };
 		84E9F3262C2915DD00E48F52 /* SelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectViewController.m; sourceTree = "<group>"; };
@@ -555,6 +558,7 @@
 		54688C9F2ABCC23C007F48E8 /* MyApplication */ = {
 			isa = PBXGroup;
 			children = (
+				84B129312D69D2C10017768F /* gcdTIMER */,
 				8447949D2CC8991000B514D4 /* TimeLineRulerDemo */,
 				84E9F3232C2915DD00E48F52 /* SelectViewDemo */,
 				84E9F3282C2915DD00E48F52 /* TimerDemo */,
@@ -695,6 +699,15 @@
 				84AF028F2BBAC525004CE44A /* pcm_raw_data.raw */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		84B129312D69D2C10017768F /* gcdTIMER */ = {
+			isa = PBXGroup;
+			children = (
+				84B129322D69D2D80017768F /* GCDTimer.h */,
+				84B129332D69D2D80017768F /* GCDTimer.m */,
+			);
+			path = gcdTIMER;
 			sourceTree = "<group>";
 		};
 		84E9F3232C2915DD00E48F52 /* SelectViewDemo */ = {
@@ -963,6 +976,7 @@
 				54134C7B2ADEEF24007FBE7C /* rotate_neon.cc in Sources */,
 				844794AC2CC8AADB00B514D4 /* TimeRulerMark.m in Sources */,
 				54134C7F2ADEEF24007FBE7C /* row_gcc.cc in Sources */,
+				84B129342D69D2D80017768F /* GCDTimer.m in Sources */,
 				54134C4F2ADEEF24007FBE7C /* rotate_common.cc in Sources */,
 				54134C612ADEEF24007FBE7C /* compare_msa.cc in Sources */,
 				54FB173D2B8B2735000DE3D7 /* UILabel2.m in Sources */,

@@ -49,7 +49,8 @@
         @{kItemName:@"TimerDemo", kItemVc:[TimerDemoViewController class]},
         @{kItemName:@"SelectDemo", kItemVc:[SelectViewController class]},
         @{kItemName:@"XibDemo", kItemVc:[XibDemoViewController class]},
-        @{kItemName:@"TimeLineDemo", kItemVc:[TimelineViewController class]}
+        @{kItemName:@"TimeLineDemo", kItemVc:[TimelineViewController class]},
+        @{kItemName:@"GCDDemo", kItemVc:[TimelineViewController class]}
     ];
 
     
